@@ -1,0 +1,75 @@
+WHITESPACE < [ \t]+
+
+main <- contraction* "[END]"
+
+contraction <- contraction_id NL
+                result NL
+                factor NL
+                num_vertices NL
+                super_vertex NL
+                num_arcs NL
+                vertices NL
+                arcs NL
+                external_arcs NL
+                contr_string NL
+                result_string NL
+
+
+contraction_id <- "[CONTR] #" INT
+
+result <- "/RESULT/" NL tensor_spec
+
+factor <- "/FACTOR/"
+          DOUBLE # external factor
+          INT    # sign
+          DOUBLE # contraction factor
+
+num_vertices <- "/#VERTICES/"
+                INT # vertex count
+                INT # operator count
+
+super_vertex <- "/SVERTEX/" INT+ # operator indices
+
+num_arcs <- "/#ARCS/"
+            INT # arc count
+            INT # external arc count
+
+vertices <- "/VERTICES/" tensor_spec+
+
+arcs <- "/ARCS/" arc_spec
+
+external_arcs <- "/XARCS/" arc_spec
+
+contr_string <- "/CONTR_STRING/" NL
+                (   NL NL NL NL NL /
+                    (
+                        INT+ NL # vertex indices
+                        INT+ NL # index types
+                        INT+ NL # index spaces
+                        INT+ NL # result flags
+                        INT+ NL # arc index
+                        INT+    # index IDs
+                    )
+                )
+
+result_string <- "/RESULT_STRING/" NL
+                 INT* NL # vertex indices
+                 INT* NL # index types
+                 INT* NL # index spaces
+                 INT* NL # arc index
+                 INT* NL # index IDs
+
+tensor_spec <- ID ID index_spec # name transpose
+
+index_spec <- "[" OPTIONAL_ID COMMA OPTIONAL_ID (";" OPTIONAL_ID COMMA OPTIONAL_ID)* "]"
+
+arc_spec <- (NL INT INT index_spec)*
+
+NL <- "\n"
+DIGIT <- [0-9]
+LETTER <- [a-zA-Z]
+INT <- ("+" / "-")? DIGIT+
+DOUBLE <- ("+" / "-")? DIGIT* "." DIGIT+
+COMMA <- ","
+ID <- (LETTER / "_" / DIGIT)+
+OPTIONAL_ID <- (LETTER / "_" / DIGIT)*
