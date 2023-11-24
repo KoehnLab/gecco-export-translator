@@ -5,12 +5,13 @@ from pe.operators import Star, Class
 
 import os
 
-script_dir: str = os.path.dirname(os.path.realpath(__file__))
 
 
 def main():
+    script_dir: str = os.path.dirname(os.path.realpath(__file__))
+    grammar_dir = os.path.realpath(os.path.join(script_dir, "..", "grammar"))
     grammar_definition = open(
-        os.path.join(script_dir, "gecco_export_grammar.peg"), "r"
+        os.path.join(grammar_dir, "gecco_export_grammar.peg"), "r"
     ).read()
     grammar = pe.compile(grammar_definition, ignore=Star(Class(" \t\r\v\f")))
     grammar.match(" [END]")
