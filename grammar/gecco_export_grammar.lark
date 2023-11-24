@@ -13,7 +13,7 @@ contraction: contraction_id \
              result_string 
 
 
-contraction_id: _CONTRACTION_ID_TAG INT _NL
+?contraction_id: _CONTRACTION_ID_TAG INT _NL
 
 result: _RESULT_TAG _NL tensor_spec _NL
 
