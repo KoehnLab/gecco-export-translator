@@ -1,0 +1,67 @@
+start: contraction* _END_TAG _NL*
+
+contraction: contraction_id \
+             result         \
+             factor         \
+             num_vertices   \
+             super_vertex   \
+             num_arcs       \
+             vertices       \
+             arcs           \
+             external_arcs  \
+             contr_string   \
+             result_string 
+
+
+contraction_id: _CONTRACTION_ID_TAG INT _NL
+
+result: _RESULT_TAG _NL tensor_spec _NL
+
+factor: _FACTOR_TAG DOUBLE INT DOUBLE _NL
+
+num_vertices: _NUM_VERTICES_TAG INT INT _NL
+
+super_vertex: _SUPER_VERTEX_TAG INT+ _NL
+
+num_arcs: _NUM_ARCS_TAG INT INT _NL
+
+vertices: _VERTICES_TAG _NL (tensor_spec _NL)+
+
+arcs: _ARCS_TAG _NL (arc_spec _NL)*
+
+external_arcs: _EXT_ARCS_TAG _NL (arc_spec _NL)*
+
+contr_string: _CONTRACTION_STRING_TAG _NL ( _NL~6 | (INT+ _NL)~3 ID+ _NL (INT+ _NL)~2 )
+
+result_string: _RESULT_STRING_TAG _NL (INT* _NL)~5
+
+tensor_spec: ID ID index_spec # name transpose
+
+index_spec: _L_BRACKET [ID] _COMMA [ID] (_SEMICOLON [ID] _COMMA [ID])* _R_BRACKET
+
+arc_spec: INT INT index_spec
+
+
+_NL: "\n"
+_END_TAG: "[END]"
+_CONTRACTION_ID_TAG: "[CONTR] #"
+_RESULT_TAG: "/RESULT/"
+_FACTOR_TAG: "/FACTOR/"
+_NUM_VERTICES_TAG: "/#VERTICES/"
+_SUPER_VERTEX_TAG: "/SVERTEX/"
+_NUM_ARCS_TAG: "/#ARCS/"
+_VERTICES_TAG: "/VERTICES/"
+_ARCS_TAG: "/ARCS/"
+_EXT_ARCS_TAG: "/XARCS/"
+_CONTRACTION_STRING_TAG: "/CONTR_STRING/"
+_RESULT_STRING_TAG: "/RESULT_STRING/"
+_L_BRACKET: "["
+_R_BRACKET: "]"
+_COMMA: ","
+_SEMICOLON: ";"
+
+INT: ("+" | "-")? ("0".."9")+
+DOUBLE: ("+" | "-")? ("0".."9")* "." ("0".."9")+
+ID: ("a".."z" | "A".."Z" | "_" | "0".."9")+
+WHITESPACE: " " | "\t" | "\r"
+%ignore WHITESPACE

@@ -1,0 +1,51 @@
+[CONTR] #        1
+  /RESULT/
+        ECCD  F [,]
+  /FACTOR/         1.00000000000000   1         1.00000000000000
+  /#VERTICES/     1    1
+  /SVERTEX/   1
+  /#ARCS/     0    0
+  /VERTICES/
+          H  F [,]
+  /ARCS/
+  /XARCS/
+  /CONTR_STRING/
+
+
+
+
+
+
+  /RESULT_STRING/
+
+
+
+
+
+[CONTR] #        2
+  /RESULT/
+        ECCD  F [,]
+  /FACTOR/         1.00000000000000   1         0.25000000000000
+  /#VERTICES/     2    2
+  /SVERTEX/   1   2
+  /#ARCS/     1    0
+  /VERTICES/
+          H  F [HH,PP]
+         T2  F [PP,HH]
+  /ARCS/
+         1  2  [HH,PP]
+  /XARCS/
+  /CONTR_STRING/
+     1   1   1   1   2   2   2   2
+     1   1   2   2   1   1   2   2
+     1   1   2   2   2   2   1   1
+     F   F   F   F   F   F   F   F
+     1   1   1   1   1   1   1   1
+     1   2   2   1   1   2   2   1
+  /RESULT_STRING/
+
+
+
+
+
+[END]

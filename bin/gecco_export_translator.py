@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
 
-import pe
-from pe.operators import Star, Class
+from lark import Lark
 
 import os
-
 
 
 def main():
@@ -13,8 +11,8 @@ def main():
     grammar_definition = open(
         os.path.join(grammar_dir, "gecco_export_grammar.peg"), "r"
     ).read()
-    grammar = pe.compile(grammar_definition, ignore=Star(Class(" \t\r\v\f")))
-    grammar.match(" [END]")
+    parser = Lark(grammar_definition)
+    print(parser.parse(" [END]").pretty())
 
 
 if __name__ == "__main__":

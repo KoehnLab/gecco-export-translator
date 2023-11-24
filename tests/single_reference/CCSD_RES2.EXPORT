@@ -1,0 +1,683 @@
+[CONTR] #        1
+  /RESULT/
+          O2  F [PP,HH]
+  /FACTOR/         1.00000000000000   1         1.00000000000000
+  /#VERTICES/     1    1
+  /SVERTEX/   1
+  /#ARCS/     0    1
+  /VERTICES/
+          H  F [PP,HH]
+  /ARCS/
+  /XARCS/
+         1  1  [PP,HH]
+  /CONTR_STRING/
+     1   1   1   1
+     1   1   2   2
+     2   2   1   1
+     T   T   T   T
+     1   1   1   1
+     1   2   2   1
+  /RESULT_STRING/
+     1   1   1   1
+     1   1   2   2
+     2   2   1   1
+     1   1   1   1
+     1   2   2   1
+[CONTR] #        2
+  /RESULT/
+          O2  F [PP,HH]
+  /FACTOR/         1.00000000000000   1         1.00000000000000
+  /#VERTICES/     2    2
+  /SVERTEX/   1   2
+  /#ARCS/     1    2
+  /VERTICES/
+          H  F [HP,HH]
+         T1  F [P,H]
+  /ARCS/
+         1  2  [H,]
+  /XARCS/
+         1  1  [P,HH]
+         2  1  [P,]
+  /CONTR_STRING/
+     1   1   1   1   2   2
+     1   1   2   2   1   2
+     1   2   1   1   2   1
+     F   T   T   T   T   F
+     1   1   1   1   1   1
+     3   1   2   1   2   3
+  /RESULT_STRING/
+     1   1   1   1
+     1   1   2   2
+     2   2   1   1
+     1   1   1   1
+     1   2   2   1
+[CONTR] #        3
+  /RESULT/
+          O2  F [PP,HH]
+  /FACTOR/         1.00000000000000  -1         1.00000000000000
+  /#VERTICES/     2    2
+  /SVERTEX/   1   2
+  /#ARCS/     1    2
+  /VERTICES/
+          H  F [PP,HP]
+         T1  F [P,H]
+  /ARCS/
+         1  2  [,P]
+  /XARCS/
+         1  1  [PP,H]
+         2  1  [,H]
+  /CONTR_STRING/
+     1   1   1   1   2   2
+     1   1   2   2   1   2
+     2   2   1   2   2   1
+     T   T   T   F   F   T
+     1   1   1   1   1   1
+     1   2   1   3   3   2
+  /RESULT_STRING/
+     1   1   1   1
+     1   1   2   2
+     2   2   1   1
+     1   1   1   1
+     1   2   2   1
+[CONTR] #        4
+  /RESULT/
+          O2  F [PP,HH]
+  /FACTOR/         1.00000000000000  -1         1.00000000000000
+  /#VERTICES/     2    2
+  /SVERTEX/   1   2
+  /#ARCS/     1    2
+  /VERTICES/
+          H  F [H,H]
+         T2  F [PP,HH]
+  /ARCS/
+         1  2  [H,]
+  /XARCS/
+         1  1  [,H]
+         2  1  [PP,H]
+  /CONTR_STRING/
+     1   1   2   2   2   2
+     1   2   1   1   2   2
+     1   1   2   2   1   1
+     F   T   T   T   F   T
+     1   1   1   1   1   1
+     3   2   1   2   3   1
+  /RESULT_STRING/
+     1   1   1   1
+     1   1   2   2
+     2   2   1   1
+     1   1   1   1
+     1   2   2   1
+[CONTR] #        5
+  /RESULT/
+          O2  F [PP,HH]
+  /FACTOR/         1.00000000000000   1         1.00000000000000
+  /#VERTICES/     2    2
+  /SVERTEX/   1   2
+  /#ARCS/     1    2
+  /VERTICES/
+          H  F [P,P]
+         T2  F [PP,HH]
+  /ARCS/
+         1  2  [,P]
+  /XARCS/
+         1  1  [P,]
+         2  1  [P,HH]
+  /CONTR_STRING/
+     1   1   2   2   2   2
+     1   2   1   1   2   2
+     2   2   2   2   1   1
+     T   F   T   F   T   T
+     1   1   1   1   1   1
+     2   3   1   3   2   1
+  /RESULT_STRING/
+     1   1   1   1
+     1   1   2   2
+     2   2   1   1
+     1   1   1   1
+     1   2   2   1
+[CONTR] #        6
+  /RESULT/
+          O2  F [PP,HH]
+  /FACTOR/         1.00000000000000   1         0.50000000000000
+  /#VERTICES/     2    2
+  /SVERTEX/   1   2
+  /#ARCS/     1    2
+  /VERTICES/
+          H  F [HH,HH]
+      INTpp  F [PP,HH]
+  /ARCS/
+         1  2  [HH,]
+  /XARCS/
+         1  1  [,HH]
+         2  1  [PP,]
+  /CONTR_STRING/
+     1   1   1   1   2   2   2   2
+     1   1   2   2   1   1   2   2
+     1   1   1   1   2   2   1   1
+     F   F   T   T   T   T   F   F
+     1   1   1   1   1   1   1   1
+     3   4   2   1   1   2   4   3
+  /RESULT_STRING/
+     1   1   1   1
+     1   1   2   2
+     2   2   1   1
+     1   1   1   1
+     1   2   2   1
+[CONTR] #        7
+  /RESULT/
+          O2  F [PP,HH]
+  /FACTOR/         1.00000000000000   1         1.00000000000000
+  /#VERTICES/     2    2
+  /SVERTEX/   1   2
+  /#ARCS/     1    2
+  /VERTICES/
+          H  F [HP,HP]
+         T2  F [PP,HH]
+  /ARCS/
+         1  2  [H,P]
+  /XARCS/
+         1  1  [P,H]
+         2  1  [P,H]
+  /CONTR_STRING/
+     1   1   1   1   2   2   2   2
+     1   1   2   2   1   1   2   2
+     1   2   1   2   2   2   1   1
+     F   T   T   F   T   F   F   T
+     1   1   1   1   1   1   1   1
+     3   2   2   3   1   3   3   1
+  /RESULT_STRING/
+     1   1   1   1
+     1   1   2   2
+     2   2   1   1
+     1   1   1   1
+     1   2   2   1
+[CONTR] #        8
+  /RESULT/
+          O2  F [PP,HH]
+  /FACTOR/         1.00000000000000   1         0.50000000000000
+  /#VERTICES/     2    2
+  /SVERTEX/   1   2
+  /#ARCS/     1    2
+  /VERTICES/
+          H  F [PP,PP]
+      INTpp  F [PP,HH]
+  /ARCS/
+         1  2  [,PP]
+  /XARCS/
+         1  1  [PP,]
+         2  1  [,HH]
+  /CONTR_STRING/
+     1   1   1   1   2   2   2   2
+     1   1   2   2   1   1   2   2
+     2   2   2   2   2   2   1   1
+     T   T   F   F   F   F   T   T
+     1   1   1   1   1   1   1   1
+     1   2   4   3   3   4   2   1
+  /RESULT_STRING/
+     1   1   1   1
+     1   1   2   2
+     2   2   1   1
+     1   1   1   1
+     1   2   2   1
+[CONTR] #        9
+  /RESULT/
+          O2  F [PP,HH]
+  /FACTOR/         1.00000000000000   1         0.50000000000000
+  /#VERTICES/     3    3
+  /SVERTEX/   1   2   3
+  /#ARCS/     2    2
+  /VERTICES/
+          H  F [HH,PP]
+      INTpp  F [PP,HH]
+         T2  F [PP,HH]
+  /ARCS/
+         1  2  [H,PP]
+         1  3  [H,]
+  /XARCS/
+         2  1  [,H]
+         3  1  [PP,H]
+  /CONTR_STRING/
+     1   1   1   1   2   2   2   2   3   3   3   3
+     1   1   2   2   1   1   2   2   1   1   2   2
+     1   1   2   2   2   2   1   1   2   2   1   1
+     F   F   F   F   F   F   F   T   T   T   F   T
+     1   2   1   1   1   1   1   1   1   1   2   1
+     3   4   4   3   3   4   3   2   1   2   4   1
+  /RESULT_STRING/
+     1   1   1   1
+     1   1   2   2
+     2   2   1   1
+     1   1   1   1
+     1   2   2   1
+[CONTR] #       10
+  /RESULT/
+          O2  F [PP,HH]
+  /FACTOR/         1.00000000000000   1         0.25000000000000
+  /#VERTICES/     3    3
+  /SVERTEX/   1   2   3
+  /#ARCS/     2    2
+  /VERTICES/
+          H  F [HH,PP]
+      INTpp  F [PP,HH]
+         T2  F [PP,HH]
+  /ARCS/
+         1  2  [,PP]
+         1  3  [HH,]
+  /XARCS/
+         2  1  [,HH]
+         3  1  [PP,]
+  /CONTR_STRING/
+     1   1   1   1   2   2   2   2   3   3   3   3
+     1   1   2   2   1   1   2   2   1   1   2   2
+     1   1   2   2   2   2   1   1   2   2   1   1
+     F   F   F   F   F   F   T   T   T   T   F   F
+     2   2   1   1   1   1   1   1   1   1   2   2
+     3   4   4   3   3   4   2   1   1   2   4   3
+  /RESULT_STRING/
+     1   1   1   1
+     1   1   2   2
+     2   2   1   1
+     1   1   1   1
+     1   2   2   1
+[CONTR] #       11
+  /RESULT/
+          O2  F [PP,HH]
+  /FACTOR/         1.00000000000000   1         0.50000000000000
+  /#VERTICES/     3    3
+  /SVERTEX/   1   2   3
+  /#ARCS/     2    2
+  /VERTICES/
+          H  F [HH,PP]
+      INTpp  F [PP,HH]
+         T2  F [PP,HH]
+  /ARCS/
+         1  2  [HH,P]
+         1  3  [,P]
+  /XARCS/
+         2  1  [P,]
+         3  1  [P,HH]
+  /CONTR_STRING/
+     1   1   1   1   2   2   2   2   3   3   3   3
+     1   1   2   2   1   1   2   2   1   1   2   2
+     1   1   2   2   2   2   1   1   2   2   1   1
+     F   F   F   F   T   F   F   F   T   F   T   T
+     1   1   2   1   1   1   1   1   1   2   1   1
+     3   4   4   3   2   3   4   3   1   4   2   1
+  /RESULT_STRING/
+     1   1   1   1
+     1   1   2   2
+     2   2   1   1
+     1   1   1   1
+     1   2   2   1
+[CONTR] #       12
+  /RESULT/
+          O2  F [PP,HH]
+  /FACTOR/         0.50000000000000   1         1.00000000000000
+  /#VERTICES/     3    3
+  /SVERTEX/   1   2   3
+  /#ARCS/     2    2
+  /VERTICES/
+          H  F [HH,PP]
+         T2  F [PP,HH]
+         T2  F [PP,HH]
+  /ARCS/
+         1  2  [H,P]
+         1  3  [H,P]
+  /XARCS/
+         2  1  [P,H]
+         3  1  [P,H]
+  /CONTR_STRING/
+     1   1   1   1   2   2   2   2   3   3   3   3
+     1   1   2   2   1   1   2   2   1   1   2   2
+     1   1   2   2   2   2   1   1   2   2   1   1
+     F   F   F   F   T   F   F   T   T   F   F   T
+     1   2   2   1   1   1   1   1   1   2   2   1
+     3   4   4   3   1   3   3   1   2   4   4   2
+  /RESULT_STRING/
+     1   1   1   1
+     1   1   2   2
+     2   2   1   1
+     1   1   1   1
+     1   2   2   1
+[CONTR] #       13
+  /RESULT/
+          O2  F [PP,HH]
+  /FACTOR/         1.00000000000000  -1         1.00000000000000
+  /#VERTICES/     3    3
+  /SVERTEX/   1   2   3
+  /#ARCS/     2    3
+  /VERTICES/
+          H  F [HP,HP]
+         T1  F [P,H]
+         T1  F [P,H]
+  /ARCS/
+         1  2  [,P]
+         1  3  [H,]
+  /XARCS/
+         1  1  [P,H]
+         2  1  [,H]
+         3  1  [P,]
+  /CONTR_STRING/
+     1   1   1   1   2   2   3   3
+     1   1   2   2   1   2   1   2
+     1   2   1   2   2   1   2   1
+     F   T   T   F   F   T   T   F
+     2   1   1   1   1   1   1   2
+     3   1   1   3   3   2   2   3
+  /RESULT_STRING/
+     1   1   1   1
+     1   1   2   2
+     2   2   1   1
+     1   1   1   1
+     1   2   2   1
+[CONTR] #       14
+  /RESULT/
+          O2  F [PP,HH]
+  /FACTOR/         1.00000000000000  -1         1.00000000000000
+  /#VERTICES/     3    3
+  /SVERTEX/   1   2   3
+  /#ARCS/     2    2
+  /VERTICES/
+          H  F [H,P]
+         T2  F [PP,HH]
+         T1  F [P,H]
+  /ARCS/
+         1  2  [,P]
+         1  3  [H,]
+  /XARCS/
+         2  1  [P,HH]
+         3  1  [P,]
+  /CONTR_STRING/
+     1   1   2   2   2   2   3   3
+     1   2   1   1   2   2   1   2
+     1   2   2   2   1   1   2   1
+     F   F   T   F   T   T   T   F
+     2   1   1   1   1   1   1   2
+     3   3   1   3   2   1   2   3
+  /RESULT_STRING/
+     1   1   1   1
+     1   1   2   2
+     2   2   1   1
+     1   1   1   1
+     1   2   2   1
+[CONTR] #       15
+  /RESULT/
+          O2  F [PP,HH]
+  /FACTOR/         1.00000000000000  -1         1.00000000000000
+  /#VERTICES/     3    3
+  /SVERTEX/   1   2   3
+  /#ARCS/     2    2
+  /VERTICES/
+          H  F [H,P]
+         T2  F [PP,HH]
+         T1  F [P,H]
+  /ARCS/
+         1  2  [H,]
+         1  3  [,P]
+  /XARCS/
+         2  1  [PP,H]
+         3  1  [,H]
+  /CONTR_STRING/
+     1   1   2   2   2   2   3   3
+     1   2   1   1   2   2   1   2
+     1   2   2   2   1   1   2   1
+     F   F   T   T   F   T   F   T
+     1   2   1   1   1   1   2   1
+     3   3   1   2   3   1   3   2
+  /RESULT_STRING/
+     1   1   1   1
+     1   1   2   2
+     2   2   1   1
+     1   1   1   1
+     1   2   2   1
+[CONTR] #       16
+  /RESULT/
+          O2  F [PP,HH]
+  /FACTOR/         1.00000000000000  -1         1.00000000000000
+  /#VERTICES/     3    3
+  /SVERTEX/   1   2   3
+  /#ARCS/     2    3
+  /VERTICES/
+          H  F [HH,HP]
+         T2  F [PP,HH]
+         T1  F [P,H]
+  /ARCS/
+         1  2  [H,P]
+         1  3  [H,]
+  /XARCS/
+         1  1  [,H]
+         2  1  [P,H]
+         3  1  [P,]
+  /CONTR_STRING/
+     1   1   1   1   2   2   2   2   3   3
+     1   1   2   2   1   1   2   2   1   2
+     1   1   1   2   2   2   1   1   2   1
+     F   F   T   F   T   F   F   T   T   F
+     1   2   1   1   1   1   1   1   1   2
+     3   4   2   3   1   3   3   1   2   4
+  /RESULT_STRING/
+     1   1   1   1
+     1   1   2   2
+     2   2   1   1
+     1   1   1   1
+     1   2   2   1
+[CONTR] #       17
+  /RESULT/
+          O2  F [PP,HH]
+  /FACTOR/         1.00000000000000  -1         0.50000000000000
+  /#VERTICES/     3    3
+  /SVERTEX/   1   2   3
+  /#ARCS/     2    3
+  /VERTICES/
+          H  F [HH,HP]
+      INTpp  F [PP,HH]
+         T1  F [P,H]
+  /ARCS/
+         1  2  [HH,]
+         1  3  [,P]
+  /XARCS/
+         1  1  [,H]
+         2  1  [PP,]
+         3  1  [,H]
+  /CONTR_STRING/
+     1   1   1   1   2   2   2   2   3   3
+     1   1   2   2   1   1   2   2   1   2
+     1   1   1   2   2   2   1   1   2   1
+     F   F   T   F   T   T   F   F   F   T
+     1   1   1   2   1   1   1   1   2   1
+     3   4   1   3   1   2   4   3   3   2
+  /RESULT_STRING/
+     1   1   1   1
+     1   1   2   2
+     2   2   1   1
+     1   1   1   1
+     1   2   2   1
+[CONTR] #       18
+  /RESULT/
+          O2  F [PP,HH]
+  /FACTOR/         1.00000000000000   1         1.00000000000000
+  /#VERTICES/     3    3
+  /SVERTEX/   1   2   3
+  /#ARCS/     2    2
+  /VERTICES/
+          H  F [HH,HP]
+         T2  F [PP,HH]
+         T1  F [P,H]
+  /ARCS/
+         1  2  [H,]
+         1  3  [H,P]
+  /XARCS/
+         1  1  [,H]
+         2  1  [PP,H]
+  /CONTR_STRING/
+     1   1   1   1   2   2   2   2   3   3
+     1   1   2   2   1   1   2   2   1   2
+     1   1   1   2   2   2   1   1   2   1
+     F   F   T   F   T   T   F   T   F   F
+     1   2   1   2   1   1   1   1   2   2
+     3   4   2   3   1   2   3   1   3   4
+  /RESULT_STRING/
+     1   1   1   1
+     1   1   2   2
+     2   2   1   1
+     1   1   1   1
+     1   2   2   1
+[CONTR] #       19
+  /RESULT/
+          O2  F [PP,HH]
+  /FACTOR/         1.00000000000000   1         0.50000000000000
+  /#VERTICES/     3    3
+  /SVERTEX/   1   2   3
+  /#ARCS/     2    3
+  /VERTICES/
+          H  F [HP,PP]
+      INTpp  F [PP,HH]
+         T1  F [P,H]
+  /ARCS/
+         1  2  [,PP]
+         1  3  [H,]
+  /XARCS/
+         1  1  [P,]
+         2  1  [,HH]
+         3  1  [P,]
+  /CONTR_STRING/
+     1   1   1   1   2   2   2   2   3   3
+     1   1   2   2   1   1   2   2   1   2
+     1   2   2   2   2   2   1   1   2   1
+     F   T   F   F   F   F   T   T   T   F
+     2   1   1   1   1   1   1   1   1   2
+     3   1   4   3   3   4   2   1   2   3
+  /RESULT_STRING/
+     1   1   1   1
+     1   1   2   2
+     2   2   1   1
+     1   1   1   1
+     1   2   2   1
+[CONTR] #       20
+  /RESULT/
+          O2  F [PP,HH]
+  /FACTOR/         1.00000000000000   1         1.00000000000000
+  /#VERTICES/     3    3
+  /SVERTEX/   1   2   3
+  /#ARCS/     2    3
+  /VERTICES/
+          H  F [HP,PP]
+         T2  F [PP,HH]
+         T1  F [P,H]
+  /ARCS/
+         1  2  [H,P]
+         1  3  [,P]
+  /XARCS/
+         1  1  [P,]
+         2  1  [P,H]
+         3  1  [,H]
+  /CONTR_STRING/
+     1   1   1   1   2   2   2   2   3   3
+     1   1   2   2   1   1   2   2   1   2
+     1   2   2   2   2   2   1   1   2   1
+     F   T   F   F   T   F   F   T   F   T
+     1   1   2   1   1   1   1   1   2   1
+     3   2   4   3   1   3   3   1   4   2
+  /RESULT_STRING/
+     1   1   1   1
+     1   1   2   2
+     2   2   1   1
+     1   1   1   1
+     1   2   2   1
+[CONTR] #       21
+  /RESULT/
+          O2  F [PP,HH]
+  /FACTOR/         1.00000000000000  -1         1.00000000000000
+  /#VERTICES/     3    3
+  /SVERTEX/   1   2   3
+  /#ARCS/     2    2
+  /VERTICES/
+          H  F [HP,PP]
+         T2  F [PP,HH]
+         T1  F [P,H]
+  /ARCS/
+         1  2  [,P]
+         1  3  [H,P]
+  /XARCS/
+         1  1  [P,]
+         2  1  [P,HH]
+  /CONTR_STRING/
+     1   1   1   1   2   2   2   2   3   3
+     1   1   2   2   1   1   2   2   1   2
+     1   2   2   2   2   2   1   1   2   1
+     F   T   F   F   T   F   T   T   F   F
+     2   1   2   1   1   1   1   1   2   2
+     3   2   4   3   1   3   2   1   4   3
+  /RESULT_STRING/
+     1   1   1   1
+     1   1   2   2
+     2   2   1   1
+     1   1   1   1
+     1   2   2   1
+[CONTR] #       22
+  /RESULT/
+          O2  F [PP,HH]
+  /FACTOR/         0.50000000000000  -1         0.50000000000000
+  /#VERTICES/     4    4
+  /SVERTEX/   1   2   3   4
+  /#ARCS/     3    3
+  /VERTICES/
+          H  F [HH,PP]
+      INTpp  F [PP,HH]
+         T1  F [P,H]
+         T1  F [P,H]
+  /ARCS/
+         1  2  [,PP]
+         1  3  [H,]
+         1  4  [H,]
+  /XARCS/
+         2  1  [,HH]
+         3  1  [P,]
+         4  1  [P,]
+  /CONTR_STRING/
+     1   1   1   1   2   2   2   2   3   3   4   4
+     1   1   2   2   1   1   2   2   1   2   1   2
+     1   1   2   2   2   2   1   1   2   1   2   1
+     F   F   F   F   F   F   T   T   T   F   T   F
+     2   3   1   1   1   1   1   1   1   2   1   3
+     3   4   4   3   3   4   2   1   2   3   1   4
+  /RESULT_STRING/
+     1   1   1   1
+     1   1   2   2
+     2   2   1   1
+     1   1   1   1
+     1   2   2   1
+[CONTR] #       23
+  /RESULT/
+          O2  F [PP,HH]
+  /FACTOR/         1.00000000000000  -1         1.00000000000000
+  /#VERTICES/     4    4
+  /SVERTEX/   1   2   3   4
+  /#ARCS/     3    3
+  /VERTICES/
+          H  F [HH,PP]
+         T2  F [PP,HH]
+         T1  F [P,H]
+         T1  F [P,H]
+  /ARCS/
+         1  2  [H,P]
+         1  3  [,P]
+         1  4  [H,]
+  /XARCS/
+         2  1  [P,H]
+         3  1  [,H]
+         4  1  [P,]
+  /CONTR_STRING/
+     1   1   1   1   2   2   2   2   3   3   4   4
+     1   1   2   2   1   1   2   2   1   2   1   2
+     1   1   2   2   2   2   1   1   2   1   2   1
+     F   F   F   F   T   F   F   T   F   T   T   F
+     1   3   2   1   1   1   1   1   2   1   1   3
+     3   4   4   3   1   3   3   1   4   2   2   4
+  /RESULT_STRING/
+     1   1   1   1
+     1   1   2   2
+     2   2   1   1
+     1   1   1   1
+     1   2   2   1
+[END]
