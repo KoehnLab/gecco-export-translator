@@ -37,6 +37,22 @@ class TestGrammar(unittest.TestCase):
                 ):
                     parser.parse(content)
 
+    def test_multi_reference_exports(self):
+        test_inputs = glob.glob(
+            os.path.join(self.script_dir, "multi_reference", "*.EXPORT")
+        )
+        for parser_variant in ["earley", "lalr"]:
+            parser = Lark(self.grammar, parser=parser_variant)
+            for current_input in test_inputs:
+                with open(os.path.join(current_input), "r") as file:
+                    content = file.read()
+                with self.subTest(
+                    "Unable to parse valid export file",
+                    parser=parser_variant,
+                    file=current_input,
+                ):
+                    parser.parse(content)
+
 
 if __name__ == "__main__":
     unittest.main()
