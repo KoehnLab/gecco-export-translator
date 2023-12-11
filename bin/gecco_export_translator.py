@@ -71,57 +71,54 @@ class Contraction:
     external_indices: List[Index]
 
 
+def argsort(sequence):
+    return sorted(range(len(sequence)), key=sequence.__getitem__)
+
+
+def add_indices(
+    operators: List[Operator], vertex_ids: List[int], indices: List[Index]
+) -> TensorElement:
+    assert len(operators) == len(vertex_ids)
+    # Assume all operators belong to the same super vertex and thus have the same name
+    assert all(x.name == operators[0].name for x in operators)
+
+    tensor_indices: List[IndexGroup] = []
+
+    for i in range(len(operators)):
+        current_op = operators[i]
+        current_vertex_id = vertex_ids[i]
+
+        current_indices = [x for x in indices if x.vertex == current_vertex_id]
+        creators = [x for x in current_indices if x.type == 0]
+        annihilators = [x for x in current_indices if x.type == 1]
+        assert len(creators) + len(annihilators) == len(current_indices)
+
+        assert len(current_op.indexing) == 1
+
+        spaces: IndexSpaces = current_op.indexing[0]
+
+        assert len(spaces.creators) == len(creators)
+        assert len(spaces.annihilators) == len(annihilators)
+        assert all(
+            creators[i].space == spaces.creators[i] for i in range(len(creators))
+        )
+        assert all(
+            annihilators[i].space == spaces.annihilators[i]
+            for i in range(len(annihilators))
+        )
+
+        tensor_indices.append(IndexGroup(creators=creators, annihilators=annihilators))
+
+    return TensorElement(
+        name=operators[0].name,
+        transposed=operators[0].transposed,
+        indices=tensor_indices,
+    )
+
+
 class MyTransformer(Transformer):
     def start(self, contractions) -> List[Contraction]:
         return list(contractions)
-
-    @staticmethod
-    def add_indices(
-        operators: List[Operator], vertex_ids: List[int], indices: List[Index]
-    ) -> TensorElement:
-        assert len(operators) == len(vertex_ids)
-        # Assume all operators belong to the same super vertex and thus have the same name
-        assert all(x.name == operators[0].name for x in operators)
-
-        tensor_indices: List[IndexGroup] = []
-
-        for i in range(len(operators)):
-            current_op = operators[i]
-            current_vertex_id = vertex_ids[i]
-
-            current_indices = [x for x in indices if x.vertex == current_vertex_id]
-            creators = [x for x in current_indices if x.type == 0]
-            annihilators = [x for x in current_indices if x.type == 1]
-            assert len(creators) + len(annihilators) == len(current_indices)
-
-            assert len(current_op.indexing) == 1
-
-            spaces: IndexSpaces = current_op.indexing[0]
-
-            assert len(spaces.creators) == len(creators)
-            assert len(spaces.annihilators) == len(annihilators)
-            assert all(
-                creators[i].space == spaces.creators[i] for i in range(len(creators))
-            )
-            assert all(
-                annihilators[i].space == spaces.annihilators[i]
-                for i in range(len(annihilators))
-            )
-
-            tensor_indices.append(
-                IndexGroup(creators=creators, annihilators=annihilators)
-            )
-
-        # Remove indices that we have just consumed
-        indices[:] = (x for x in indices if x.vertex not in vertex_ids)
-
-        assert len(tensor_indices) > 0
-
-        return TensorElement(
-            name=operators[0].name,
-            transposed=operators[0].transposed,
-            indices=tensor_indices,
-        )
 
     def contraction(self, items) -> Contraction:
         (
@@ -155,19 +152,48 @@ class MyTransformer(Transformer):
         assert contr_id > 0
         contr_id -= 1
 
-        # TODO
+        contracted_tensors: List[TensorElement] = []
+
         # 1. Identify all vertices belonging to a single super-vertex
         # 2. Feed these vertices together into add_indices to yield indexed TensorElements
+        vertex_order = argsort(super_vertex_association)
+        vertex_iter = iter(vertex_order)
+        for i in vertex_iter:
+            # Find vertices that belong to the same super vertex
+            super_vertex = super_vertex_association[i]
+            vertex_ids = [i]
+            vertex_group = [vertices[i]]
+            while (
+                len(super_vertex_association) > i + 1
+                and super_vertex_association[i + 1] == super_vertex
+            ):
+                i = next(vertex_iter)
+                vertex_ids.append(i)
+                vertex_group.append(vertices[i])
+
+            tensor = add_indices(
+                indices=contraction_indices,
+                vertex_ids=vertex_ids,
+                operators=vertex_group,
+            )
+            contracted_tensors.append(tensor)
 
         # TODO: Find a way to deal with result_op possibly consisting of multiple vertices itself
         # -> split into individual vertices before also feeding to add_indices?
+        if len(result_op.indexing) > 1:
+            result_vertices = []
+            result_super_vertices = []
+        else:
+            result_vertices = [result_op]
+            result_super_vertices = [0]
+        result_tensor = add_indices(operators=result_vertices, vertex_ids=result_super_vertices, indices=external_indices)
 
         return Contraction(
             id=contr_id,
             factor=factor,
             result=result_tensor,
             super_vertex_association=super_vertex_association,
-            vertices=vertices,
+            vertices=contracted_tensors,
             arcs=arcs,
             external_arcs=external_arcs,
             contraction_indices=contraction_indices,
@@ -293,6 +319,18 @@ class MyTransformer(Transformer):
             indices=indexing,
         )
 
+    def num_arcs(self, parts) -> Tuple[int, int]:
+        num_arcs, num_xarcs = parts
+        assert type(num_arcs) is int
+        assert type(num_xarcs) is int
+        return (num_arcs, num_xarcs)
+
+    def num_vertices(self, parts) -> Tuple[int, int]:
+        num_vertices, num_operators = parts
+        assert type(num_vertices) is int
+        assert type(num_operators) is int
+        return (num_vertices, num_operators)
+
     def super_vertex(self, spec) -> List[int]:
         vertex_association = list(spec)
 
@@ -371,7 +409,12 @@ def to_tex(contractions: List[Contraction]) -> str:
 
     for current in contractions:
         factor = Fraction(str(current.factor))
-        tex += str(factor)
+        if factor != 1:
+            tex += str(factor) + " "
+
+        for vertex in current.vertices:
+            tex += vertex.name + "^"
+            # TODO: find way to deal with multi-vertex operators
 
     return tex
 
@@ -396,10 +439,11 @@ def main():
 
     contractions: List[Contraction] = MyTransformer().transform(tree)
 
-    # print(contractions)
+    print(contractions)
 
     if args.format == "tex":
         translated = to_tex(contractions=contractions)
+        print(translated)
     else:
         raise RuntimeError("Unsupported target format '{}'".format(args.format))
 
