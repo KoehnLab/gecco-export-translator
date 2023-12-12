@@ -107,6 +107,12 @@ def add_indices(
             for i in range(len(annihilators))
         )
 
+        # In GeCCo the index pairing (which indices belong to same particle) goes from the outside
+        # to the inside, e.g. 12|21, but we would like a column-like association where same-particle
+        # indices stand on top of each other when splitting between creators and annihilators.
+        # Therefore, we have to reverse the order of annihilators to get e.g. 12|12
+        annihilators.reverse()
+
         tensor_indices.append(IndexGroup(creators=creators, annihilators=annihilators))
 
     return TensorElement(
@@ -138,12 +144,8 @@ class MyTransformer(Transformer):
         n_vertices, n_operators = num_vertices
         n_arcs, n_xarcs = num_arcs
 
-        operator_names = set()
-        for current in vertices:
-            operator_names.add(current.name)
-
         assert len(vertices) == n_vertices
-        assert len(operator_names) == n_operators
+        assert len(set(super_vertex_association)) == n_operators
         assert len(arcs) == n_arcs
         assert len(external_arcs) == n_xarcs
 
@@ -178,15 +180,19 @@ class MyTransformer(Transformer):
             )
             contracted_tensors.append(tensor)
 
-        # TODO: Find a way to deal with result_op possibly consisting of multiple vertices itself
-        # -> split into individual vertices before also feeding to add_indices?
+        # Note: result_op can consist of multiple vertices itself
+        # -> split into individual vertices before also feeding to add_indices
         if len(result_op.indexing) > 1:
             result_vertices = []
             result_super_vertices = []
         else:
             result_vertices = [result_op]
             result_super_vertices = [0]
-        result_tensor = add_indices(operators=result_vertices, vertex_ids=result_super_vertices, indices=external_indices)
+        result_tensor = add_indices(
+            operators=result_vertices,
+            vertex_ids=result_super_vertices,
+            indices=external_indices,
+        )
 
         return Contraction(
             id=contr_id,
@@ -210,10 +216,9 @@ class MyTransformer(Transformer):
             vertex_idx = parts[i]
             idx_type = parts[i + nIndices]
             idx_space = parts[i + 2 * nIndices]
-            external = parts[i + 3 * nIndices]
             # This data is duplicated
-            vertex_idx2 = parts[i + 4 * nIndices]
-            idx_id = parts[i + 5 * nIndices]
+            vertex_idx2 = parts[i + 3 * nIndices]
+            idx_id = parts[i + 4 * nIndices]
 
             assert vertex_idx == vertex_idx2
 
@@ -231,17 +236,12 @@ class MyTransformer(Transformer):
             assert idx_id > 0
             idx_id -= 1
 
-            assert type(external) == str
-            assert external in ["T", "F"]
-            external = True if external == "T" else False
-
-            if external:
-                continue
-
             idx = Index(id=idx_id, space=idx_space, vertex=vertex_idx, type=idx_type)
             result_indices.append(idx)
 
         assert not None in result_indices
+        assert len(result_indices) == nIndices
+
         return result_indices
 
     def contr_string(self, parts) -> List[Index]:
@@ -279,8 +279,8 @@ class MyTransformer(Transformer):
             assert external in ["T", "F"]
             external = True if external == "T" else False
 
-            if external:
-                continue
+            # TODO: Do we need the external tag somewhere?
+            # also beware that arc_idx is result_vert_idx if external == True
 
             idx = Index(id=idx_id, space=idx_space, vertex=vertex_idx, type=idx_type)
             contraction_indices.append(idx)
@@ -347,6 +347,16 @@ class MyTransformer(Transformer):
         assert transposed in ["T", "F"]
         transposed = True if transposed == "T" else False
 
+        if transposed:
+            # For transposed operators we have to exchange creator and annihilator spaces
+            for i in range(len(indices)):
+                current_group: IndexSpaces = indices[i]
+                current_group.creators, current_group.annihilators = (
+                    current_group.annihilators,
+                    current_group.creators,
+                )
+                indices[i] = current_group
+
         return Operator(name=name, indexing=indices, transposed=transposed)
 
     def space_groups(self, spec) -> List[IndexSpaces]:
@@ -401,20 +411,45 @@ def get_parser(parser: str = "lalr") -> Lark:
 
 def index_to_tex(index: Index) -> str:
     base_label = ["o", "v", "a"][index.space]
-    return "{}_{}".format(base_label, index.id)
+    return "{}_{}".format(base_label, index.id + 1)
+
+
+def tensor_to_tex(tensor: TensorElement) -> str:
+    tex = tensor.name
+
+    creators: List[str] = []
+    annihilators: List[str] = []
+    for current_idx_group in tensor.indices:
+        creators.extend([index_to_tex(x) for x in current_idx_group.creators])
+        annihilators.extend([index_to_tex(x) for x in current_idx_group.annihilators])
+
+    tex += "^{" + " ".join(annihilators) + "}"
+    tex += "_{" + " ".join(creators) + "}"
+
+    return tex
 
 
 def to_tex(contractions: List[Contraction]) -> str:
     tex = ""
 
     for current in contractions:
+        if len(tex) > 0:
+            tex += "\n"
+
+        tex += tensor_to_tex(current.result)
+
         factor = Fraction(str(current.factor))
+        if factor < 0:
+            factor *= -1
+            tex += " -= "
+        else:
+            tex += " += "
+
         if factor != 1:
             tex += str(factor) + " "
 
         for vertex in current.vertices:
-            tex += vertex.name + "^"
-            # TODO: find way to deal with multi-vertex operators
+            tex += tensor_to_tex(vertex) + " "
 
     return tex
 
@@ -439,7 +474,7 @@ def main():
 
     contractions: List[Contraction] = MyTransformer().transform(tree)
 
-    print(contractions)
+    # print(contractions)
 
     if args.format == "tex":
         translated = to_tex(contractions=contractions)
