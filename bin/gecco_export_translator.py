@@ -82,6 +82,8 @@ def add_indices(
     # Assume all operators belong to the same super vertex and thus have the same name
     assert all(x.name == operators[0].name for x in operators)
 
+    print("Op name: ", operators[0].name)
+
     tensor_indices: List[IndexGroup] = []
 
     for i in range(len(operators)):
@@ -102,6 +104,9 @@ def add_indices(
         assert all(
             creators[i].space == spaces.creators[i] for i in range(len(creators))
         )
+        print(annihilators)
+        print(spaces.annihilators)
+        print()
         assert all(
             annihilators[i].space == spaces.annihilators[i]
             for i in range(len(annihilators))
@@ -153,6 +158,8 @@ class MyTransformer(Transformer):
         assert type(contr_id) == int
         assert contr_id > 0
         contr_id -= 1
+
+        print("Contraction #", contr_id + 1)
 
         contracted_tensors: List[TensorElement] = []
 
