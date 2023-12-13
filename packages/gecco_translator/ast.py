@@ -34,8 +34,8 @@ class Index:
 
 @dataclass
 class IndexGroup:
-    creators: List[Index]
-    annihilators: List[Index]
+    creators: List[Index] = []
+    annihilators: List[Index] = []
 
 
 @dataclass
