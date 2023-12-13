@@ -11,7 +11,9 @@ if find_spec("gecco_translator") is None:
     script_dir = os.path.dirname(os.path.realpath(__file__))
     sys.path.append(os.path.join(script_dir, "..", "packages"))
 
-from gecco_translator import Contraction, parse, to_tex
+from gecco_translator.ast import Contraction
+from gecco_translator.parse import parse
+from gecco_translator.translators import to_tex
 
 
 def main():
