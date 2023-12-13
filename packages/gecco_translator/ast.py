@@ -11,9 +11,16 @@ class IndexSpaces:
 
 
 @dataclass
-class Operator:
+class ResultOperator:
     name: str
-    indexing: List[IndexSpaces]
+    vertices: List[IndexSpaces]
+    transposed: bool
+
+
+@dataclass
+class OperatorVertex:
+    name: str
+    spaces: IndexSpaces
     transposed: bool
 
 
@@ -34,7 +41,7 @@ class IndexGroup:
 @dataclass
 class TensorElement:
     name: str
-    indices: List[IndexGroup]
+    vertex_indices: List[IndexGroup]
     transposed: bool
 
 
@@ -42,7 +49,7 @@ class TensorElement:
 class Arc:
     first_vertex_idx: int
     second_vertex_idx: int
-    indices: IndexSpaces
+    contracted_spaces: IndexSpaces
 
 
 @dataclass
@@ -57,19 +64,23 @@ class Contraction:
     id: int
     factor: float
     result: TensorElement
-    super_vertex_association: List[int]
-    vertices: List[TensorElement]
-    arcs: List[Arc]
-    external_arcs: List[Arc]
+    tensors: List[TensorElement]
+    contractions: List[Arc]
+    external_contractions: List[ExternalArc]
     contraction_indices: List[Index]
     external_indices: List[Index]
 
 
-def argsort(sequence):
+def argsort(sequence) -> List[int]:
+    """Returns a list of indices into the provided sequence such that accessing the indexed elements in order will result
+    in accessing the sequence in an ordered (sorted) way. This is a pure Python reimplementation of NumPy's argsort functionality.
+    """
     return sorted(range(len(sequence)), key=sequence.__getitem__)
 
 
 def first_index_of_space(indices: List[Index], space: int, start: int = 0) -> int:
+    """Gets the index of the first Index object in indices that belongs to the given index space. start defines
+    from which starting offset on to consider Index objects inside indices."""
     for i in range(start, len(indices)):
         if indices[i].space == space:
             return i
@@ -80,6 +91,9 @@ def first_index_of_space(indices: List[Index], space: int, start: int = 0) -> in
 
 
 def order_indices_by_space(indices: List[Index], spaces: List[int]) -> List[Index]:
+    """Orders the Index objects inside indices in such a way that their associated index spaces match the order
+    of spaces as provided in the spaces list. Relative order of Index objects of the same space is retained.
+    """
     assert len(indices) == len(spaces)
 
     for i in range(len(indices)):
@@ -100,16 +114,16 @@ def order_indices_by_space(indices: List[Index], spaces: List[int]) -> List[Inde
 
 
 def add_indices(
-    operators: List[Operator], vertex_ids: List[int], indices: List[Index]
+    operator_vertices: List[OperatorVertex], vertex_ids: List[int], indices: List[Index]
 ) -> TensorElement:
-    assert len(operators) == len(vertex_ids)
+    assert len(operator_vertices) == len(vertex_ids)
     # Assume all operators belong to the same super vertex and thus have the same name
-    assert all(x.name == operators[0].name for x in operators)
+    assert all(x.name == operator_vertices[0].name for x in operator_vertices)
 
     tensor_indices: List[IndexGroup] = []
 
-    for i in range(len(operators)):
-        current_op = operators[i]
+    for i in range(len(operator_vertices)):
+        current_op = operator_vertices[i]
         current_vertex_id = vertex_ids[i]
 
         current_indices = [x for x in indices if x.vertex == current_vertex_id]
@@ -117,9 +131,7 @@ def add_indices(
         annihilators = [x for x in current_indices if x.type == 1]
         assert len(creators) + len(annihilators) == len(current_indices)
 
-        assert len(current_op.indexing) == 1
-
-        spaces: IndexSpaces = current_op.indexing[0]
+        spaces: IndexSpaces = current_op.spaces
 
         assert len(spaces.creators) == len(creators)
         assert len(spaces.annihilators) == len(annihilators)
@@ -146,9 +158,9 @@ def add_indices(
         tensor_indices.append(IndexGroup(creators=creators, annihilators=annihilators))
 
     return TensorElement(
-        name=operators[0].name,
-        transposed=operators[0].transposed,
-        indices=tensor_indices,
+        name=operator_vertices[0].name,
+        transposed=operator_vertices[0].transposed,
+        vertex_indices=tensor_indices,
     )
 
 
@@ -156,14 +168,29 @@ class ASTTransformer(Transformer):
     def start(self, contractions) -> List[Contraction]:
         return list(contractions)
 
-    def contraction(self, items) -> Contraction:
+    def contraction(
+        self,
+        items: Tuple[
+            int,
+            ResultOperator,
+            float,
+            Tuple[int, int],
+            List[int],
+            Tuple[int, int],
+            List[OperatorVertex],
+            List[Arc],
+            List[ExternalArc],
+            List[Index],
+            List[Index],
+        ],
+    ) -> Contraction:
         (
             contr_id,
             result_op,
             factor,
-            num_vertices,
+            vertex_counters,
             super_vertex_association,
-            num_arcs,
+            arc_counters,
             vertices,
             arcs,
             external_arcs,
@@ -171,8 +198,8 @@ class ASTTransformer(Transformer):
             external_indices,
         ) = items
 
-        n_vertices, n_operators = num_vertices
-        n_arcs, n_xarcs = num_arcs
+        n_vertices, n_operators = vertex_counters
+        n_arcs, n_xarcs = arc_counters
 
         assert len(vertices) == n_vertices
         assert len(set(super_vertex_association)) == n_operators
@@ -208,7 +235,7 @@ class ASTTransformer(Transformer):
             tensor = add_indices(
                 indices=contraction_indices,
                 vertex_ids=vertex_ids,
-                operators=vertex_group,
+                operator_vertices=vertex_group,
             )
             contracted_tensors.append(tensor)
 
@@ -218,24 +245,20 @@ class ASTTransformer(Transformer):
 
         # Note: result_op can consist of multiple vertices itself
         # -> split into individual vertices before also feeding to add_indices
-        if len(result_op.indexing) > 1:
-            result_vertices = []
-            result_super_vertices = []
-            for i, current_space_group in enumerate(result_op.indexing):
-                result_vertices.append(
-                    Operator(
-                        name=result_op.name,
-                        indexing=[current_space_group],
-                        transposed=result_op.transposed,
-                    )
+        result_vertices: List[OperatorVertex] = []
+        result_super_vertices: List[int] = []
+        for i, current_space_group in enumerate(result_op.vertices):
+            result_vertices.append(
+                OperatorVertex(
+                    name=result_op.name,
+                    spaces=current_space_group,
+                    transposed=result_op.transposed,
                 )
-                result_super_vertices.append(i)
+            )
+            result_super_vertices.append(i)
 
-        else:
-            result_vertices = [result_op]
-            result_super_vertices = [0]
         result_tensor = add_indices(
-            operators=result_vertices,
+            operator_vertices=result_vertices,
             vertex_ids=result_super_vertices,
             indices=external_indices,
         )
@@ -244,10 +267,9 @@ class ASTTransformer(Transformer):
             id=contr_id,
             factor=factor,
             result=result_tensor,
-            super_vertex_association=super_vertex_association,
-            vertices=contracted_tensors,
-            arcs=arcs,
-            external_arcs=external_arcs,
+            tensors=contracted_tensors,
+            contractions=arcs,
+            external_contractions=external_arcs,
             contraction_indices=contraction_indices,
             external_indices=external_indices,
         )
@@ -325,8 +347,7 @@ class ASTTransformer(Transformer):
             assert external in ["T", "F"]
             external = True if external == "T" else False
 
-            # TODO: Do we need the external tag somewhere?
-            # also beware that arc_idx is result_vert_idx if external == True
+            # Beware that arc_idx is result_vert_idx if external == True
 
             idx = Index(id=idx_id, space=idx_space, vertex=vertex_idx, type=idx_type)
             contraction_indices.append(idx)
@@ -334,7 +355,7 @@ class ASTTransformer(Transformer):
         assert not None in contraction_indices
         return contraction_indices
 
-    def vertices(self, operators) -> List[Operator]:
+    def vertices(self, operators) -> List[OperatorVertex]:
         return list(operators)
 
     def external_arcs(self, parts) -> List[Arc]:
@@ -362,7 +383,7 @@ class ASTTransformer(Transformer):
         return Arc(
             first_vertex_idx=first_vertex_idx,
             second_vertex_idx=second_vertex_idx,
-            indices=indexing,
+            contracted_spaces=indexing,
         )
 
     def num_arcs(self, parts) -> Tuple[int, int]:
@@ -388,30 +409,55 @@ class ASTTransformer(Transformer):
 
         return vertex_association
 
-    def operator_spec(self, components) -> Operator:
-        name, transposed, indices = components
+    def result_spec(self, components) -> ResultOperator:
+        name, transposed, vertices = components
         assert transposed in ["T", "F"]
         transposed = True if transposed == "T" else False
 
         if transposed:
             # For transposed operators we have to exchange creator and annihilator spaces
-            for i in range(len(indices)):
-                current_group: IndexSpaces = indices[i]
+            for i in range(len(vertices)):
+                current_group: IndexSpaces = vertices[i]
                 current_group.creators, current_group.annihilators = (
                     current_group.annihilators,
                     current_group.creators,
                 )
-                indices[i] = current_group
+                vertices[i] = current_group
 
-        return Operator(name=name, indexing=indices, transposed=transposed)
+        return ResultOperator(name=name, vertices=vertices, transposed=transposed)
 
-    def space_groups(self, spec) -> List[IndexSpaces]:
-        name_to_id = {
-            "H": 0,  # occupied
-            "P": 1,  # virtual
-            "V": 2,  # active
-        }
+    def vertex(self, components) -> OperatorVertex:
+        name, transposed, spaces = components
+        assert transposed in ["T", "F"]
+        transposed = True if transposed == "T" else False
 
+        if transposed:
+            # For transposed operators we have to exchange creator and annihilator spaces
+            spaces.creators, spaces.annihilators = (
+                spaces.annihilators,
+                spaces.creators,
+            )
+
+        return OperatorVertex(name=name, spaces=spaces, transposed=transposed)
+
+    name_to_id = {
+        "H": 0,  # occupied
+        "P": 1,  # virtual
+        "V": 2,  # active
+    }
+
+    def index_space_group(self, spec) -> IndexSpaces:
+        assert len(spec) == 2
+        creators = list(spec[0]) if spec[0] is not None else []
+        annihilators = list(spec[1]) if spec[1] is not None else []
+
+        # Convert index spaces from string to numeric representation
+        creators = [self.name_to_id[x] for x in creators]
+        annihilators = [self.name_to_id[x] for x in annihilators]
+
+        return IndexSpaces(creators=creators, annihilators=annihilators)
+
+    def result_vertex_spaces(self, spec) -> List[IndexSpaces]:
         assert len(spec) % 2 == 0
         groups: List[IndexSpaces] = []
         for i in range(0, len(spec), 2):
@@ -419,8 +465,8 @@ class ASTTransformer(Transformer):
             annihilators = list(spec[i + 1]) if spec[i + 1] is not None else []
 
             # Convert index spaces from string to numeric representation
-            creators = [name_to_id[x] for x in creators]
-            annihilators = [name_to_id[x] for x in annihilators]
+            creators = [self.name_to_id[x] for x in creators]
+            annihilators = [self.name_to_id[x] for x in annihilators]
 
             groups.append(IndexSpaces(creators=creators, annihilators=annihilators))
 

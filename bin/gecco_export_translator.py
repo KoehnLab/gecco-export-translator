@@ -28,7 +28,7 @@ def tensor_to_tex(tensor: TensorElement) -> str:
 
     creators: List[str] = []
     annihilators: List[str] = []
-    for current_idx_group in tensor.indices:
+    for current_idx_group in tensor.vertex_indices:
         creators.extend([index_to_tex(x) for x in current_idx_group.creators])
         annihilators.extend([index_to_tex(x) for x in current_idx_group.annihilators])
 
@@ -57,8 +57,8 @@ def to_tex(contractions: List[Contraction]) -> str:
         if factor != 1:
             tex += str(factor) + " "
 
-        for vertex in current.vertices:
-            tex += tensor_to_tex(vertex) + " "
+        for current_tensor in current.tensors:
+            tex += tensor_to_tex(current_tensor) + " "
 
     return tex
 

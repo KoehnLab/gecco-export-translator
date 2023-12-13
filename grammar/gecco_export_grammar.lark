@@ -15,7 +15,7 @@ contraction: contraction_id \
 
 ?contraction_id: _CONTRACTION_ID_TAG INT _NL
 
-?result: _RESULT_TAG _NL operator_spec _NL
+?result: _RESULT_TAG _NL result_spec _NL
 
 factor: _FACTOR_TAG DOUBLE INT DOUBLE _NL
 
@@ -25,7 +25,7 @@ super_vertex: _SUPER_VERTEX_TAG INT+ _NL
 
 num_arcs: _NUM_ARCS_TAG INT INT _NL
 
-vertices: _VERTICES_TAG _NL (operator_spec _NL)+
+vertices: _VERTICES_TAG _NL (vertex _NL)+
 
 arcs: _ARCS_TAG _NL (arc_spec _NL)*
 
@@ -35,11 +35,15 @@ contr_string: _CONTRACTION_STRING_TAG _NL ( _NL~6 | (INT+ _NL)~3 ID+ _NL (INT+ _
 
 result_string: _RESULT_STRING_TAG _NL (INT* _NL)~5
 
-operator_spec: ID ID space_groups # name transpose
+result_spec: ID ID result_vertex_spaces
 
-space_groups: _L_BRACKET [ID] _COMMA [ID] (_SEMICOLON [ID] _COMMA [ID])* _R_BRACKET
+vertex: ID ID index_space_group
 
-arc_spec: INT INT space_groups
+index_space_group: _L_BRACKET [ID] _COMMA [ID] _R_BRACKET
+
+result_vertex_spaces: _L_BRACKET [ID] _COMMA [ID] (_SEMICOLON [ID] _COMMA [ID])* _R_BRACKET
+
+arc_spec: INT INT index_space_group
 
 
 _NL: "\n"

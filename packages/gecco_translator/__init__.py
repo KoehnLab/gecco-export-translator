@@ -1,6 +1,7 @@
 from .ast import (
     IndexSpaces,
-    Operator,
+    ResultOperator,
+    OperatorVertex,
     Index,
     IndexGroup,
     Arc,
