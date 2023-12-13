@@ -10,3 +10,4 @@ from .ast import (
     ASTTransformer,
 )
 from .parse import read_grammar, get_parser, parse
+from .translators import to_tex
