@@ -75,14 +75,42 @@ def argsort(sequence):
     return sorted(range(len(sequence)), key=sequence.__getitem__)
 
 
+def first_index_of_space(indices: List[Index], space: int, start: int = 0) -> int:
+    for i in range(start, len(indices)):
+        if indices[i].space == space:
+            return i
+
+    raise ValueError(
+        "No index belongs to space {} for an offset >= {}".format(space, start)
+    )
+
+
+def order_indices_by_space(indices: List[Index], spaces: List[int]) -> List[Index]:
+    assert len(indices) == len(spaces)
+
+    for i in range(len(indices)):
+        if indices[i].space == spaces[i]:
+            # Index matches space -> keep it where it is
+            continue
+
+        # Space of i-th index != i-th space -> insert first matching index instead
+        matching_index_idx = first_index_of_space(
+            indices=indices, space=spaces[i], start=i
+        )
+        assert matching_index_idx > i
+        indices.insert(i, indices[matching_index_idx])
+        # Delete the index that we have inserted at position i
+        del indices[matching_index_idx + 1]
+
+    return indices
+
+
 def add_indices(
     operators: List[Operator], vertex_ids: List[int], indices: List[Index]
 ) -> TensorElement:
     assert len(operators) == len(vertex_ids)
     # Assume all operators belong to the same super vertex and thus have the same name
     assert all(x.name == operators[0].name for x in operators)
-
-    print("Op name: ", operators[0].name)
 
     tensor_indices: List[IndexGroup] = []
 
@@ -101,12 +129,15 @@ def add_indices(
 
         assert len(spaces.creators) == len(creators)
         assert len(spaces.annihilators) == len(annihilators)
+
+        creators = order_indices_by_space(indices=creators, spaces=spaces.creators)
+        annihilators = order_indices_by_space(
+            indices=annihilators, spaces=spaces.annihilators
+        )
+
         assert all(
             creators[i].space == spaces.creators[i] for i in range(len(creators))
         )
-        print(annihilators)
-        print(spaces.annihilators)
-        print()
         assert all(
             annihilators[i].space == spaces.annihilators[i]
             for i in range(len(annihilators))
@@ -159,26 +190,26 @@ class MyTransformer(Transformer):
         assert contr_id > 0
         contr_id -= 1
 
-        print("Contraction #", contr_id + 1)
-
         contracted_tensors: List[TensorElement] = []
 
         # 1. Identify all vertices belonging to a single super-vertex
         # 2. Feed these vertices together into add_indices to yield indexed TensorElements
         vertex_order = argsort(super_vertex_association)
-        vertex_iter = iter(vertex_order)
-        for i in vertex_iter:
+        i = 0
+        while i < len(vertex_order):
+            idx = vertex_order[i]
             # Find vertices that belong to the same super vertex
-            super_vertex = super_vertex_association[i]
-            vertex_ids = [i]
-            vertex_group = [vertices[i]]
+            super_vertex = super_vertex_association[idx]
+            vertex_ids = [idx]
+            vertex_group = [vertices[idx]]
             while (
-                len(super_vertex_association) > i + 1
-                and super_vertex_association[i + 1] == super_vertex
+                len(vertex_order) > i + 1
+                and super_vertex_association[vertex_order[i + 1]] == super_vertex
             ):
-                i = next(vertex_iter)
-                vertex_ids.append(i)
-                vertex_group.append(vertices[i])
+                i += 1
+                idx = vertex_order[i]
+                vertex_ids.append(idx)
+                vertex_group.append(vertices[idx])
 
             tensor = add_indices(
                 indices=contraction_indices,
@@ -187,11 +218,25 @@ class MyTransformer(Transformer):
             )
             contracted_tensors.append(tensor)
 
+            i += 1
+
+        assert len(contracted_tensors) == n_operators
+
         # Note: result_op can consist of multiple vertices itself
         # -> split into individual vertices before also feeding to add_indices
         if len(result_op.indexing) > 1:
             result_vertices = []
             result_super_vertices = []
+            for i, current_space_group in enumerate(result_op.indexing):
+                result_vertices.append(
+                    Operator(
+                        name=result_op.name,
+                        indexing=[current_space_group],
+                        transposed=result_op.transposed,
+                    )
+                )
+                result_super_vertices.append(i)
+
         else:
             result_vertices = [result_op]
             result_super_vertices = [0]
