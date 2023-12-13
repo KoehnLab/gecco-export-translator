@@ -263,6 +263,11 @@ class ASTTransformer(Transformer):
             indices=external_indices,
         )
 
+        # Remove those indices from contraction_indices that are actually external indices
+        contraction_indices = [
+            x for x in contraction_indices if not x in external_indices
+        ]
+
         return Contraction(
             id=contr_id,
             factor=factor,
