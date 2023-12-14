@@ -24,7 +24,7 @@ class OperatorVertex:
     transposed: bool
 
 
-@dataclass
+@dataclass(frozen=True)
 class Index:
     id: int
     space: int

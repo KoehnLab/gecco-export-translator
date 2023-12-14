@@ -1,6 +1,33 @@
 from typing import List, Tuple, Optional, Set
 
-from gecco_translator.ast import Contraction, IndexGroup, Index, TensorElement
+from itertools import product
+import copy
+
+from gecco_translator.ast import Contraction, Index, TensorElement
+
+
+def strip_index(idx: Index) -> Index:
+    return Index(id=idx.id, space=idx.space, type=idx.type, vertex=-1)
+
+
+def strip_tensor(tensor: TensorElement) -> TensorElement:
+    for i in range(len(tensor.vertex_indices)):
+        current = tensor.vertex_indices[i]
+        current.creators = [strip_index(x) for x in current.creators]
+        current.annihilators = [strip_index(x) for x in current.annihilators]
+        tensor.vertex_indices[i] = current
+
+    return tensor
+
+
+def strip_contraction(contr: Contraction) -> Contraction:
+    contr_copy = copy.deepcopy(contr)
+
+    contr_copy.result = strip_tensor(contr_copy.result)
+    for i in range(len(contr_copy.tensors)):
+        contr_copy.tensors[i] = strip_tensor(contr_copy.tensors[i])
+
+    return contr_copy
 
 
 def find_index(idx: Index, tensors: List[TensorElement]) -> Tuple[int, int]:
@@ -11,12 +38,12 @@ def find_index(idx: Index, tensors: List[TensorElement]) -> Tuple[int, int]:
             current_vertex = current_tensor.vertex_indices[k]
 
             if idx.type == 0:
-                found_at: Optional[int] = current_vertex.creators.index(idx)
+                found = idx in current_vertex.creators
             else:
                 assert idx.type == 1
-                found_at: Optional[int] = current_vertex.annihilators.index(idx)
+                found = idx in current_vertex.annihilators
 
-            if not found_at is None:
+            if found:
                 return (i, k)
 
     raise ValueError(
@@ -35,7 +62,7 @@ def indices_from_different_vertices(
         first_origin = find_index(idx=first, tensors=tensors)
         for j in range(i + 1, len(indices)):
             second = indices[j]
-            second_origin = find_index(idx=first, tensors=tensors)
+            second_origin = find_index(idx=second, tensors=tensors)
 
             if first_origin != second_origin:
                 idx_pairs.append((first, second))
@@ -43,12 +70,47 @@ def indices_from_different_vertices(
     return idx_pairs
 
 
-def get_required_symmetrization(contraction: Contraction):
+def condense_symmetrizations(symmetrizations: List[Set[Index]]) -> List[Set[Index]]:
+    i = 0
+    while i < len(symmetrizations):
+        current_symm = symmetrizations[i]
+        redo_iteration = False
+        for j in range(i + 1, len(symmetrizations)):
+            if len(symmetrizations[j].intersection(current_symm)) > 0:
+                new_indices = symmetrizations[j].difference(current_symm)
+                old_indices = current_symm.difference(symmetrizations[j])
+
+                required_symmetrizations = [
+                    set(x) for x in product(new_indices, old_indices)
+                ]
+
+                if all(x in symmetrizations for x in required_symmetrizations):
+                    current_symm |= new_indices
+                    redo_iteration = True
+
+                    symmetrizations = [
+                        x for x in symmetrizations if x not in required_symmetrizations
+                    ]
+                    break
+
+        if not redo_iteration:
+            i += 1
+
+    return symmetrizations
+
+
+def get_required_symmetrizations(
+    orig_contraction: Contraction,
+) -> Tuple[List[Set[Index]], List[Set[Index]]]:
+    # Ensure all indices only differ in relevant properties
+    contraction = strip_contraction(orig_contraction)
+
     # All indices of the same type (creator/annihilator) are meant/required to be antisymmetric under pairwise permutations
-    symmetrizations: List[Set[Index]] = []
+    creator_symmetrizations: List[Set[Index]] = []
+    annihilator_symmetrizations: List[Set[Index]] = []
 
     for current_indices in contraction.result.vertex_indices:
-        symmetrizations.extend(
+        creator_symmetrizations.extend(
             [
                 set(x)
                 for x in indices_from_different_vertices(
@@ -56,7 +118,7 @@ def get_required_symmetrization(contraction: Contraction):
                 )
             ]
         )
-        symmetrizations.extend(
+        annihilator_symmetrizations.extend(
             [
                 set(x)
                 for x in indices_from_different_vertices(
@@ -65,31 +127,7 @@ def get_required_symmetrization(contraction: Contraction):
             ]
         )
 
-    # See if we can write the pairwise symmetrizations more compactly by writing the symmetrization
-    # down as a symmetrization of three or more indices with each other. This implies that e.g.
-    # for indices a,b,c we have pairwise symmetrizations (a,b), (a,c) and (b,c).
-    # Note that in the presence of (a,b) and (a,c), (b,c) is implied and therefore must exist as well.
-    changed = True
-    while changed:
-        changed = False
-        new_symmetrizations: List[Set[Index]] = []
+    condense_symmetrizations(creator_symmetrizations)
+    condense_symmetrizations(annihilator_symmetrizations)
 
-        while len(symmetrizations) > -1:
-            indices: Set[Index] = symmetrizations.pop()
-            additional_indices: Set[Index] = set()
-            absorbed_groups = 0
-
-            for i in reversed(range(len(symmetrizations))):
-                current_group = symmetrizations[i]
-                if len(indices.intersection(current_group)) > 0:
-                    absorbed_groups += 1
-                    for current in indices.difference(current_group):
-                        additional_indices.add(current)
-
-                    # Remove current_group from symmetrizations as we merge it into the symmetrization of indices
-                    del symmetrizations[i]
-
-            # TODO: doesn't work this way
-            assert absorbed_groups == len(additional_indices) * len(indices)
-
-        symmetrizations = new_symmetrizations
+    return (creator_symmetrizations, annihilator_symmetrizations)
