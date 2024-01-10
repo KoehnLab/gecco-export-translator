@@ -13,7 +13,7 @@ if find_spec("gecco_translator") is None:
 
 from gecco_translator.ast import Contraction
 from gecco_translator.parse import parse
-from gecco_translator.translators import to_tex
+from gecco_translator.translators import to_tex, to_sequant
 
 
 def main():
@@ -24,7 +24,10 @@ def main():
         "export_file", help="Path to the GeCCo export file that shall be translated"
     )
     argument_parser.add_argument(
-        "--format", choices=["tex"], default="tex", help="The desired output format"
+        "--format",
+        choices=["tex", "sequant"],
+        default="tex",
+        help="The desired output format",
     )
 
     args = argument_parser.parse_args()
@@ -36,6 +39,8 @@ def main():
 
     if args.format == "tex":
         print(to_tex(contractions=contractions))
+    elif args.format == "sequant":
+        print(to_sequant(contractions=contractions))
     else:
         raise RuntimeError("Unsupported target format '{}'".format(args.format))
 
