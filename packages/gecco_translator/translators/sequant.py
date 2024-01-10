@@ -22,7 +22,15 @@ def tensor_to_sequant(tensor: TensorElement) -> str:
         for group in tensor.vertex_indices
         for x in group.annihilators
     ]
-    return "{}{{{};{}}}".format(tensor.name, ",".join(creators), ",".join(annihilators))
+
+    name = tensor.name
+    if name == "H":
+        if len(creators) == 1:
+            name = "f"
+        elif len(creators) == 2:
+            name = "g"
+
+    return "{}{{{};{}}}".format(name, ",".join(creators), ",".join(annihilators))
 
 
 def symmetrizations_to_sequant(
