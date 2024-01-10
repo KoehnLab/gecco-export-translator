@@ -63,6 +63,10 @@ def symmetrizations_to_sequant(
 
     # SeQuant doesn't have a dedicated representation of antisymmetrization operators. Instead, it simply
     # uses a tensor with the label "A"
+    # Furthermore, we require to transpose creators and annihilators in order to get an upper-lower notation
+    # that seemingly indicates contraction over external indices with the antisymmetrization "tensor"
+    for i in range(len(external_indices)):
+        external_indices[i].creators, external_indices[i].annihilators = external_indices[i].annihilators, external_indices[i].creators
     formatted = tensor_to_sequant(
         TensorElement(
             name="A",
