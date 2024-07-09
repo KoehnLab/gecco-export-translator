@@ -37,12 +37,22 @@ class IndexGroup:
     creators: List[Index]
     annihilators: List[Index]
 
+    def __hash__(self):
+        # Make use of hashability of tuples (whilst lists can't be hashed)
+        return hash((hash(tuple(self.creators)), hash(tuple(self.annihilators))))
+
 
 @dataclass
 class TensorElement:
     name: str
     vertex_indices: List[IndexGroup]
     transposed: bool
+
+    def __hash__(self):
+        # Make use of hashability of tuples (whilst lists can't be hashed)
+        return hash(
+            (hash(self.name), hash(tuple(self.vertex_indices)), hash(self.transposed))
+        )
 
 
 @dataclass

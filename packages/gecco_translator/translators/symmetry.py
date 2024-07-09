@@ -64,6 +64,9 @@ def indices_from_different_vertices(
             second = indices[j]
             second_origin = find_index(idx=second, tensors=tensors)
 
+            if first.space != second.space:
+                continue
+
             if first_origin != second_origin:
                 idx_pairs.append((first, second))
 
