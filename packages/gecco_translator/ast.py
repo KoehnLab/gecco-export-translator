@@ -1,5 +1,6 @@
 from typing import List, Tuple
 from dataclasses import dataclass
+from collections import Counter
 
 from lark import Transformer
 
@@ -100,28 +101,6 @@ def first_index_of_space(indices: List[Index], space: int, start: int = 0) -> in
     )
 
 
-def order_indices_by_space(indices: List[Index], spaces: List[int]) -> List[Index]:
-    """Orders the Index objects inside indices in such a way that their associated index spaces match the order
-    of spaces as provided in the spaces list. Relative order of Index objects of the same space is retained.
-    """
-    assert len(indices) == len(spaces)
-
-    for i in range(len(indices)):
-        if indices[i].space == spaces[i]:
-            # Index matches space -> keep it where it is
-            continue
-
-        # Space of i-th index != i-th space -> insert first matching index instead
-        matching_index_idx = first_index_of_space(
-            indices=indices, space=spaces[i], start=i
-        )
-        assert matching_index_idx > i
-        indices.insert(i, indices[matching_index_idx])
-        # Delete the index that we have inserted at position i
-        del indices[matching_index_idx + 1]
-
-    return indices
-
 
 def add_indices(
     operator_vertices: List[OperatorVertex], vertex_ids: List[int], indices: List[Index]
@@ -144,20 +123,9 @@ def add_indices(
         spaces: IndexSpaces = current_op.spaces
 
         assert len(spaces.creators) == len(creators)
+        assert Counter(spaces.creators) == Counter([x.space for x in creators])
         assert len(spaces.annihilators) == len(annihilators)
-
-        creators = order_indices_by_space(indices=creators, spaces=spaces.creators)
-        annihilators = order_indices_by_space(
-            indices=annihilators, spaces=spaces.annihilators
-        )
-
-        assert all(
-            creators[i].space == spaces.creators[i] for i in range(len(creators))
-        )
-        assert all(
-            annihilators[i].space == spaces.annihilators[i]
-            for i in range(len(annihilators))
-        )
+        assert Counter(spaces.annihilators) == Counter([x.space for x in annihilators])
 
         # In GeCCo the index pairing (which indices belong to same particle) goes from the outside
         # to the inside, e.g. 12|21, but we would like a column-like association where same-particle
