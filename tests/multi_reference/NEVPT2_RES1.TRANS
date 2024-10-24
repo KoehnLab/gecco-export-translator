@@ -1,0 +1,16 @@
+O1^{o_1}_{a_1} \leftarrow  + H^{o_1}_{a_1} 
+O1^{o_1}_{a_1} \leftarrow  - GAM0^{a_2}_{a_1} H^{o_1}_{a_2} 
+O1^{o_1}_{a_1} \leftarrow  - GAM0^{a_2}_{a_3} H^{a_3 o_1}_{a_1 a_2} 
+O1^{o_1}_{a_1} \leftarrow  + \frac{1}{2} GAM0^{a_2 a_3}_{a_1 a_4} H^{a_4 o_1}_{a_2 a_3} 
+O1^{o_1}_{a_1} \leftarrow  - HAM_D^{o_1}_{o_2} T1^{o_2}_{a_1} 
+O1^{o_1}_{a_1} \leftarrow  + HAM_D^{o_1}_{o_2} GAM0^{a_2}_{a_1} T1^{o_2}_{a_2} 
+O1^{o_1}_{a_1} \leftarrow  + HAM_D^{a_2}_{a_1} T1^{o_1}_{a_2} 
+O1^{o_1}_{a_1} \leftarrow  - GAM0^{a_2}_{a_1} HAM_D^{a_3}_{a_2} T1^{o_1}_{a_3} 
+O1^{o_1}_{a_1} \leftarrow  + GAM0^{a_2}_{a_4} HAM_D^{a_3 a_4}_{a_1 a_2} T1^{o_1}_{a_3} 
+O1^{o_1}_{a_1} \leftarrow  - \frac{1}{2} GAM0^{a_2 a_3}_{a_1 a_5} HAM_D^{a_4 a_5}_{a_2 a_3} T1^{o_1}_{a_4} 
+O1^{a_1}_{v_1} \leftarrow  + GAM0^{a_1}_{a_2} H^{a_2}_{v_1} 
+O1^{a_1}_{v_1} \leftarrow  + \frac{1}{2} GAM0^{a_1 a_2}_{a_3 a_4} H^{a_3 a_4}_{v_1 a_2} 
+O1^{a_1}_{v_1} \leftarrow  + GAM0^{a_1}_{a_2} HAM_D^{v_2}_{v_1} T1^{a_2}_{v_2} 
+O1^{a_1}_{v_1} \leftarrow  - GAM0^{a_1}_{a_3} T1^{a_2}_{v_1} HAM_D^{a_3}_{a_2} 
+O1^{a_1}_{v_1} \leftarrow  + \frac{1}{2} GAM0^{a_1 a_2}_{a_4 a_5} T1^{a_3}_{v_1} HAM_D^{a_4 a_5}_{a_2 a_3} 
+O1^{o_1}_{v_1} \leftarrow  + O2g^{o_1}_{v_1} 

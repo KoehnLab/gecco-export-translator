@@ -1,0 +1,255 @@
+[CONTR] #        1
+  /RESULT/
+       DENS2  F [,;PP,HH]
+  /FACTOR/         1.00000000000000   1         1.00000000000000
+  /#VERTICES/     1    1
+  /SVERTEX/   1
+  /#ARCS/     0    1
+  /VERTICES/
+         T2  F [PP,HH]
+  /ARCS/
+  /XARCS/
+         1  2  [PP,HH]
+  /CONTR_STRING/
+     1   1   1   1
+     1   1   2   2
+     2   2   1   1
+     T   T   T   T
+     2   2   2   2
+     1   2   2   1
+  /RESULT_STRING/
+     2   2   2   2
+     1   1   2   2
+     2   2   1   1
+     2   2   2   2
+     1   2   2   1
+[CONTR] #        2
+  /RESULT/
+       DENS2  F [HH,PP;,]
+  /FACTOR/         1.00000000000000   1         1.00000000000000
+  /#VERTICES/     1    1
+  /SVERTEX/   1
+  /#ARCS/     0    1
+  /VERTICES/
+         T2  T [PP,HH]
+  /ARCS/
+  /XARCS/
+         1  1  [HH,PP]
+  /CONTR_STRING/
+     1   1   1   1
+     1   1   2   2
+     1   1   2   2
+     T   T   T   T
+     1   1   1   1
+     1   2   2   1
+  /RESULT_STRING/
+     1   1   1   1
+     1   1   2   2
+     1   1   2   2
+     1   1   1   1
+     1   2   2   1
+[CONTR] #        3
+  /RESULT/
+       DENS2  F [HH,;,HH]
+  /FACTOR/         1.00000000000000   1         0.50000000000000
+  /#VERTICES/     2    2
+  /SVERTEX/   1   2
+  /#ARCS/     1    2
+  /VERTICES/
+         T2  T [PP,HH]
+         T2  F [PP,HH]
+  /ARCS/
+         1  2  [,PP]
+  /XARCS/
+         1  1  [HH,]
+         2  2  [,HH]
+  /CONTR_STRING/
+     1   1   1   1   2   2   2   2
+     1   1   2   2   1   1   2   2
+     1   1   2   2   2   2   1   1
+     T   T   F   F   F   F   T   T
+     1   1   1   1   1   1   2   2
+     1   3   6   5   5   6   4   2
+  /RESULT_STRING/
+     1   1   2   2
+     1   1   2   2
+     1   1   1   1
+     1   1   2   2
+     1   3   4   2
+[CONTR] #        4
+  /RESULT/
+       DENS2  F [H,P;P,H]
+  /FACTOR/         1.00000000000000   1         1.00000000000000
+  /#VERTICES/     2    2
+  /SVERTEX/   1   2
+  /#ARCS/     1    2
+  /VERTICES/
+         T2  T [PP,HH]
+         T2  F [PP,HH]
+  /ARCS/
+         1  2  [H,P]
+  /XARCS/
+         1  1  [H,P]
+         2  2  [P,H]
+  /CONTR_STRING/
+     1   1   1   1   2   2   2   2
+     1   1   2   2   1   1   2   2
+     1   1   2   2   2   2   1   1
+     T   F   F   T   T   F   F   T
+     1   1   1   1   2   1   1   2
+     1   3   3   1   2   3   3   2
+  /RESULT_STRING/
+     1   1   2   2
+     1   2   1   2
+     1   2   2   1
+     1   1   2   2
+     1   1   2   2
+[CONTR] #        5
+  /RESULT/
+       DENS2  F [,PP;PP,]
+  /FACTOR/         1.00000000000000   1         0.50000000000000
+  /#VERTICES/     2    2
+  /SVERTEX/   1   2
+  /#ARCS/     1    2
+  /VERTICES/
+         T2  T [PP,HH]
+         T2  F [PP,HH]
+  /ARCS/
+         1  2  [HH,]
+  /XARCS/
+         1  1  [,PP]
+         2  2  [PP,]
+  /CONTR_STRING/
+     1   1   1   1   2   2   2   2
+     1   1   2   2   1   1   2   2
+     1   1   2   2   2   2   1   1
+     F   F   T   T   T   T   F   F
+     1   1   1   1   2   2   1   1
+     5   6   3   1   2   4   6   5
+  /RESULT_STRING/
+     1   1   2   2
+     2   2   1   1
+     2   2   2   2
+     1   1   2   2
+     3   1   2   4
+[CONTR] #        6
+  /RESULT/
+       DENS2  F [,;PP,HH]
+  /FACTOR/         1.00000000000000  -1         0.50000000000000
+  /#VERTICES/     3    3
+  /SVERTEX/   1   2   3
+  /#ARCS/     2    2
+  /VERTICES/
+         T2  T [PP,HH]
+         T2  F [PP,HH]
+         T2  F [PP,HH]
+  /ARCS/
+         1  2  [H,]
+         1  3  [H,PP]
+  /XARCS/
+         2  2  [PP,H]
+         3  2  [,H]
+  /CONTR_STRING/
+     1   1   1   1   2   2   2   2   3   3   3   3
+     1   1   2   2   1   1   2   2   1   1   2   2
+     1   1   2   2   2   2   1   1   2   2   1   1
+     F   F   F   F   T   T   F   T   F   F   F   T
+     1   2   2   2   2   2   1   2   2   2   2   2
+     3   4   4   3   1   2   3   1   3   4   4   2
+  /RESULT_STRING/
+     2   2   2   2
+     1   1   2   2
+     2   2   1   1
+     2   2   2   2
+     1   2   2   1
+[CONTR] #        7
+  /RESULT/
+       DENS2  F [,;PP,HH]
+  /FACTOR/         1.00000000000000   1         0.25000000000000
+  /#VERTICES/     3    3
+  /SVERTEX/   1   2   3
+  /#ARCS/     2    2
+  /VERTICES/
+         T2  T [PP,HH]
+         T2  F [PP,HH]
+         T2  F [PP,HH]
+  /ARCS/
+         1  2  [HH,]
+         1  3  [,PP]
+  /XARCS/
+         2  2  [PP,]
+         3  2  [,HH]
+  /CONTR_STRING/
+     1   1   1   1   2   2   2   2   3   3   3   3
+     1   1   2   2   1   1   2   2   1   1   2   2
+     1   1   2   2   2   2   1   1   2   2   1   1
+     F   F   F   F   T   T   F   F   F   F   T   T
+     1   1   2   2   2   2   1   1   2   2   2   2
+     3   4   4   3   1   2   4   3   3   4   2   1
+  /RESULT_STRING/
+     2   2   2   2
+     1   1   2   2
+     2   2   1   1
+     2   2   2   2
+     1   2   2   1
+[CONTR] #        8
+  /RESULT/
+       DENS2  F [,;PP,HH]
+  /FACTOR/         1.00000000000000  -1         0.50000000000000
+  /#VERTICES/     3    3
+  /SVERTEX/   1   2   3
+  /#ARCS/     2    2
+  /VERTICES/
+         T2  T [PP,HH]
+         T2  F [PP,HH]
+         T2  F [PP,HH]
+  /ARCS/
+         1  2  [,P]
+         1  3  [HH,P]
+  /XARCS/
+         2  2  [P,HH]
+         3  2  [P,]
+  /CONTR_STRING/
+     1   1   1   1   2   2   2   2   3   3   3   3
+     1   1   2   2   1   1   2   2   1   1   2   2
+     1   1   2   2   2   2   1   1   2   2   1   1
+     F   F   F   F   T   F   T   T   T   F   F   F
+     2   2   2   1   2   1   2   2   2   2   2   2
+     3   4   4   3   1   3   2   1   2   4   4   3
+  /RESULT_STRING/
+     2   2   2   2
+     1   1   2   2
+     2   2   1   1
+     2   2   2   2
+     1   2   2   1
+[CONTR] #        9
+  /RESULT/
+       DENS2  F [,;PP,HH]
+  /FACTOR/         0.50000000000000   1         1.00000000000000
+  /#VERTICES/     3    3
+  /SVERTEX/   1   2   3
+  /#ARCS/     2    2
+  /VERTICES/
+         T2  T [PP,HH]
+         T2  F [PP,HH]
+         T2  F [PP,HH]
+  /ARCS/
+         1  2  [H,P]
+         1  3  [H,P]
+  /XARCS/
+         2  2  [P,H]
+         3  2  [P,H]
+  /CONTR_STRING/
+     1   1   1   1   2   2   2   2   3   3   3   3
+     1   1   2   2   1   1   2   2   1   1   2   2
+     1   1   2   2   2   2   1   1   2   2   1   1
+     F   F   F   F   T   F   F   T   T   F   F   T
+     1   2   2   1   2   1   1   2   2   2   2   2
+     3   4   4   3   1   3   3   1   2   4   4   2
+  /RESULT_STRING/
+     2   2   2   2
+     1   1   2   2
+     2   2   1   1
+     2   2   2   2
+     1   2   2   1
+[END]

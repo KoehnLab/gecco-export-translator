@@ -1,0 +1,17 @@
+MRCC_LAG^{}_{} \leftarrow  + MRCC_LAG0^{}_{} 
+MRCC_LAG^{}_{} \leftarrow  + GAM0^{a_1}_{a_2} H^{a_2}_{a_1} 
+MRCC_LAG^{}_{} \leftarrow  + \frac{1}{4} GAM0^{a_1 a_2}_{a_3 a_4} H^{a_3 a_4}_{a_1 a_2} 
+MRCC_LAG^{}_{} \leftarrow  - H^{a_2}_{o_1} GAM0^{a_1}_{a_2} T1^{o_1}_{a_1} 
+MRCC_LAG^{}_{} \leftarrow  + GAM0^{a_1}_{a_3} H^{a_2 a_3}_{o_1 a_1} T1^{o_1}_{a_2} 
+MRCC_LAG^{}_{} \leftarrow  + \frac{1}{2} GAM0^{a_1 a_2}_{a_3 a_4} H^{a_3 a_4}_{o_1 a_1} T1^{o_1}_{a_2} 
+MRCC_LAG^{}_{} \leftarrow  + GAM0^{a_1}_{a_2} H^{v_1}_{a_1} T1^{a_2}_{v_1} 
+MRCC_LAG^{}_{} \leftarrow  - \frac{1}{2} GAM0^{a_1 a_2}_{a_3 a_4} H^{v_1 a_3}_{a_1 a_2} T1^{a_4}_{v_1} 
+MRCC_LAG^{}_{} \leftarrow  + GAM0^{a_1}_{a_2} H^{v_1 a_2}_{o_1 a_1} T1s^{o_1}_{v_1} 
+MRCC_LAG^{}_{} \leftarrow  - \frac{1}{2} GAM0^{a_1}_{a_2} H^{v_1 v_2}_{o_1 a_1} T2g^{a_2 o_1}_{v_1 v_2} 
+MRCC_LAG^{}_{} \leftarrow  + \frac{1}{8} GAM0^{a_1 a_2}_{a_3 a_4} H^{v_1 v_2}_{a_1 a_2} T2g^{a_3 a_4}_{v_1 v_2} 
+MRCC_LAG^{}_{} \leftarrow  - H^{v_1}_{o_1} GAM0^{a_1}_{a_2} T2g^{a_2 o_1}_{v_1 a_1} 
+MRCC_LAG^{}_{} \leftarrow  - GAM0^{a_1}_{a_3} H^{v_1 a_2}_{o_1 a_1} T2g^{a_3 o_1}_{v_1 a_2} 
+MRCC_LAG^{}_{} \leftarrow  - GAM0^{a_1 a_2}_{a_3 a_4} H^{v_1 a_3}_{o_1 a_1} T2g^{a_4 o_1}_{v_1 a_2} 
+MRCC_LAG^{}_{} \leftarrow  - \frac{1}{2} H^{a_1 a_3}_{o_1 o_2} GAM0^{a_2}_{a_3} T2g^{o_1 o_2}_{a_1 a_2} 
+MRCC_LAG^{}_{} \leftarrow  + \frac{1}{8} H^{a_3 a_4}_{o_1 o_2} GAM0^{a_1 a_2}_{a_3 a_4} T2g^{o_1 o_2}_{a_1 a_2} 
+MRCC_LAG^{}_{} \leftarrow  - \frac{1}{2} H^{v_1 a_2}_{o_1 o_2} GAM0^{a_1}_{a_2} T2g^{o_1 o_2}_{v_1 a_1} 

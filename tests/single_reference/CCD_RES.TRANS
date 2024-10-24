@@ -1,0 +1,10 @@
+O2^{o_1 o_2}_{v_1 v_2} \leftarrow  + H^{o_1 o_2}_{v_1 v_2} 
+O2^{o_1 o_2}_{v_1 v_2} \leftarrow  - \hat{\mathcal{A}}^{ o_1 o_2 }_{  } H^{o_2}_{o_3} T2^{o_1 o_3}_{v_1 v_2} 
+O2^{o_1 o_2}_{v_1 v_2} \leftarrow  + \hat{\mathcal{A}}^{  }_{ v_1 v_2 } H^{v_3}_{v_2} T2^{o_1 o_2}_{v_1 v_3} 
+O2^{o_1 o_2}_{v_1 v_2} \leftarrow  + \frac{1}{2} H^{o_1 o_2}_{o_3 o_4} T2^{o_3 o_4}_{v_1 v_2} 
+O2^{o_1 o_2}_{v_1 v_2} \leftarrow  + \hat{\mathcal{A}}^{ o_1 o_2 }_{ v_1 v_2 } H^{v_3 o_2}_{o_3 v_2} T2^{o_1 o_3}_{v_1 v_3} 
+O2^{o_1 o_2}_{v_1 v_2} \leftarrow  + \frac{1}{2} H^{v_3 v_4}_{v_1 v_2} T2^{o_1 o_2}_{v_3 v_4} 
+O2^{o_1 o_2}_{v_1 v_2} \leftarrow  + \frac{1}{2} \hat{\mathcal{A}}^{ o_1 o_2 }_{  } H^{v_3 v_4}_{o_3 o_4} T2^{o_2 o_3}_{v_3 v_4} T2^{o_1 o_4}_{v_1 v_2} 
+O2^{o_1 o_2}_{v_1 v_2} \leftarrow  + \frac{1}{4} H^{v_3 v_4}_{o_3 o_4} T2^{o_1 o_2}_{v_3 v_4} T2^{o_3 o_4}_{v_1 v_2} 
+O2^{o_1 o_2}_{v_1 v_2} \leftarrow  + \frac{1}{2} \hat{\mathcal{A}}^{  }_{ v_1 v_2 } H^{v_3 v_4}_{o_3 o_4} T2^{o_3 o_4}_{v_2 v_3} T2^{o_1 o_2}_{v_1 v_4} 
+O2^{o_1 o_2}_{v_1 v_2} \leftarrow  + \frac{1}{2} \hat{\mathcal{A}}^{ o_1 o_2 }_{ v_1 v_2 } H^{v_3 v_4}_{o_3 o_4} T2^{o_1 o_3}_{v_1 v_3} T2^{o_2 o_4}_{v_2 v_4} 
