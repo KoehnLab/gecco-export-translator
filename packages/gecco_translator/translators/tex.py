@@ -21,8 +21,9 @@ def tensor_to_tex(tensor: TensorElement) -> str:
         creators.extend([index_to_tex(x) for x in current_idx_group.creators])
         annihilators.extend([index_to_tex(x) for x in current_idx_group.annihilators])
 
-    tex += "^{" + " ".join(annihilators) + "}"
-    tex += "_{" + " ".join(creators) + "}"
+    if len(creators) > 0 or len(annihilators) > 0:
+        tex += "^{" + " ".join(annihilators) + "}"
+        tex += "_{" + " ".join(creators) + "}"
 
     return tex
 

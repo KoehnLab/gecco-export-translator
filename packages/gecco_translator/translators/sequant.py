@@ -24,6 +24,11 @@ def tensor_to_sequant(tensor: TensorElement) -> str:
         for x in group.annihilators
     ]
 
+    if len(creators) == 0 and len(annihilators) == 0:
+        # This "tensor" has no indices, i.e. it is a scalar
+        return tensor.name
+
+
     name = tensor.name
     if name == "H":
         if len(creators) == 1:
