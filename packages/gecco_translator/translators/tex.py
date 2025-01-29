@@ -59,7 +59,7 @@ def to_tex(contractions: List[Contraction]) -> str:
 
         tex += tensor_to_tex(current.result)
 
-        factor = Fraction(str(current.factor))
+        factor = Fraction(str(current.factor)).limit_denominator()
         tex += r" \leftarrow "
         if factor < 0:
             factor *= -1

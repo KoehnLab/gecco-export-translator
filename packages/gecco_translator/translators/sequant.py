@@ -121,7 +121,7 @@ def to_sequant(contractions: List[Contraction]) -> str:
             assert current.result == result
             formatted += "\n  "
 
-            factor = Fraction(str(current.factor))
+            factor = Fraction(str(current.factor)).limit_denominator()
             if factor < 0:
                 formatted += "- "
                 factor *= -1
