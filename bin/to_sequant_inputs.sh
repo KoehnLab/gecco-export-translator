@@ -73,7 +73,7 @@ process_export() {
 		elif [[ "$kind" = "R2{e1,e2;i1,i2}" ]]; then
 			copy_processed "$part_file" "${output_prefix}_res2_p2.inp" 2 "R2{a1,a2;i1,i2} ="
 		else
-			1>&2 echo "Unhandled case: ${kind}"
+			1>&2 echo "Unhandled case: '${kind}' in part '${part_file}' of '${input}'"
 		fi
 	done
 
