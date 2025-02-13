@@ -35,6 +35,11 @@ process_export() {
 		kind="$( head -n 1 "$part_file" )"
 		kind="${kind% =*}"
 
+		if [[ -z "$kind" ]]; then
+			# This part is empty
+			continue
+		fi
+
 		if [[ "$kind" = "PT_LAG" ]]; then
 			copy_processed "$part_file" "${output_prefix}_en.inp" 5 "ECC ="
 		elif [[ "$kind" = "PT_LAG0" ]]; then
