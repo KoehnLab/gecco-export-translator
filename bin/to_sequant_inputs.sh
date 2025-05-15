@@ -51,13 +51,13 @@ process_export() {
 		elif [[ "$kind" = "INTkx{e1,e2;i1,i2}" ]]; then
 			copy_processed "$part_file" "${output_prefix}_intkx_p2.inp" 2 "INTkx{a1,a2;i1,i2} ="
 		elif [[ "$kind" = "INT3ext{e1;u1}" ]]; then
-			copy_processed "$part_file" "${output_prefix}_int3ext_s0_singles.inp" 2 "INT3ext{e1;u1} ="
+			copy_processed "$part_file" "${output_prefix}_int3ext_s0_singles.inp" 2 "INT3ext{a1;u1} ="
 		elif [[ "$kind" = "INT3ext{e1;i1}" ]]; then
-			copy_processed "$part_file" "${output_prefix}_int3ext_s1.inp" 2 "INT3ext{e1;i1} ="
+			copy_processed "$part_file" "${output_prefix}_int3ext_s1_singles.inp" 2 "INT3ext{a1;i1} ="
 		elif [[ "$kind" = "INT3ext{e1,u3;u1,u2}" ]]; then
-			copy_processed "$part_file" "${output_prefix}_int3ext_s0.inp" 2 "INT3ext{e1,u3;u1,u2} ="
+			copy_processed "$part_file" "${output_prefix}_int3ext_s0.inp" 2 "INT3ext{a1,u3;u1,u2} ="
 		elif [[ "$kind" = "INT3ext{e1,u2;u1,i1}" ]]; then
-			copy_processed "$part_file" "${output_prefix}_int3ext_s1.inp" 2 "INT3ext{e1,u2;u1,i1} ="
+			copy_processed "$part_file" "${output_prefix}_int3ext_s1.inp" 2 "INT3ext{a1,u2;u1,i1} ="
 		elif [[ "$kind" = "INT3ext{e1,u1;u2,i1}" ]]; then
 			# This should be part of the option before but GeCCo for some reason puts this separately
 			# Exchange u1 and u2 and append it
@@ -66,7 +66,7 @@ process_export() {
 			sed -i 's/REPLACED/u2/g' "$part_file"
 			copy_processed "$part_file" "${output_prefix}_int3ext_s1.inp" 2 "" "append"
 		elif [[ "$kind" = "INT3ext{e1,u1;i1,i2}" ]]; then
-			copy_processed "$part_file" "${output_prefix}_int3ext_s2.inp" 2 "INT3ext{e1,u1;i1,i2} ="
+			copy_processed "$part_file" "${output_prefix}_int3ext_s2.inp" 2 "INT3ext{a1,u1;i1,i2} ="
 		elif [[ "$kind" = "R1{u1;i1}" ]]; then
 			copy_processed "$part_file" "${output_prefix}_res1_i1.inp" 2 "R1{u1;i1} ="
 		elif [[ "$kind" = "R1{e1;u1}" ]]; then
