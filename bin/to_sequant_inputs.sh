@@ -40,9 +40,9 @@ process_export() {
 			continue
 		fi
 
-		if [[ "$kind" = "PT_LAG" ]]; then
+		if [[ "$kind" = "PT_LAG" || "$kind" = "MRCC_LAG" ]]; then
 			copy_processed "$part_file" "${output_prefix}_en.inp" 5 "ECC ="
-		elif [[ "$kind" = "PT_LAG0" ]]; then
+		elif [[ "$kind" = "PT_LAG0" || "$kind" = "MRCC_LAG0" ]]; then
 			copy_processed "$part_file" "${output_prefix}_en0.inp" 3 "ECC0 ="
 		elif [[ "$kind" = "INTkx{e1,e2;u1,u2}" ]]; then
 			copy_processed "$part_file" "${output_prefix}_intkx_p0.inp" 2 "INTkx{a1,a2;u1,u2} ="
@@ -50,6 +50,23 @@ process_export() {
 			copy_processed "$part_file" "${output_prefix}_intkx_p1.inp" 2 "INTkx{a1,a2;u1,i1} ="
 		elif [[ "$kind" = "INTkx{e1,e2;i1,i2}" ]]; then
 			copy_processed "$part_file" "${output_prefix}_intkx_p2.inp" 2 "INTkx{a1,a2;i1,i2} ="
+		elif [[ "$kind" = "INT3ext{e1;u1}" ]]; then
+			copy_processed "$part_file" "${output_prefix}_int3ext_s0_singles.inp" 2 "INT3ext{e1;u1} ="
+		elif [[ "$kind" = "INT3ext{e1;i1}" ]]; then
+			copy_processed "$part_file" "${output_prefix}_int3ext_s1.inp" 2 "INT3ext{e1;i1} ="
+		elif [[ "$kind" = "INT3ext{e1,u3;u1,u2}" ]]; then
+			copy_processed "$part_file" "${output_prefix}_int3ext_s0.inp" 2 "INT3ext{e1,u3;u1,u2} ="
+		elif [[ "$kind" = "INT3ext{e1,u2;u1,i1}" ]]; then
+			copy_processed "$part_file" "${output_prefix}_int3ext_s1.inp" 2 "INT3ext{e1,u2;u1,i1} ="
+		elif [[ "$kind" = "INT3ext{e1,u1;u2,i1}" ]]; then
+			# This should be part of the option before but GeCCo for some reason puts this separately
+			# Exchange u1 and u2 and append it
+			sed -i 's/u1/REPLACED/g' "$part_file"
+			sed -i 's/u2/u1/g' "$part_file"
+			sed -i 's/REPLACED/u2/g' "$part_file"
+			copy_processed "$part_file" "${output_prefix}_int3ext_s1.inp" 2 "" "append"
+		elif [[ "$kind" = "INT3ext{e1,u1;i1,i2}" ]]; then
+			copy_processed "$part_file" "${output_prefix}_int3ext_s2.inp" 2 "INT3ext{e1,u1;i1,i2} ="
 		elif [[ "$kind" = "R1{u1;i1}" ]]; then
 			copy_processed "$part_file" "${output_prefix}_res1_i1.inp" 2 "R1{u1;i1} ="
 		elif [[ "$kind" = "R1{e1;u1}" ]]; then
