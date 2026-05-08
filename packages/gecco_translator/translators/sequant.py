@@ -28,7 +28,6 @@ def tensor_to_sequant(tensor: TensorElement) -> str:
         # This "tensor" has no indices, i.e. it is a scalar
         return tensor.name
 
-
     name = tensor.name
     if name == "H":
         if len(creators) == 1:
@@ -58,31 +57,47 @@ def symmetrizations_to_sequant(
 
     externals = merge_index_groups(external_indices)
 
+    # Beware of "symmetrizations" over different index spaces (they don't make sense)
     if len(set([x.space for x in externals.creators])) > 1:
-        assert len(externals.creators) <= 2, "For more than 2 indices, this simple workaround doesn't work"
+        assert (
+            len(externals.creators) <= 2
+        ), "For more than 2 indices, this simple workaround doesn't work"
         externals.creators = []
     if len(set([x.space for x in externals.annihilators])) > 1:
-        assert len(externals.annihilators) <= 2, "For more than 2 indices, this simple workaround doesn't work"
+        assert (
+            len(externals.annihilators) <= 2
+        ), "For more than 2 indices, this simple workaround doesn't work"
         externals.annihilators = []
 
-    n_implied_symmetrizations = math.factorial(len(externals.creators)) * math.factorial(len(externals.annihilators))
+    n_implied_symmetrizations = math.factorial(
+        len(externals.creators)
+    ) * math.factorial(len(externals.annihilators))
 
-    n_required_symmetrizations = math.prod([math.factorial(len(x)) for x in creator_symms + annihilator_symms])
+    n_required_symmetrizations = math.prod(
+        [math.factorial(len(x)) for x in creator_symms + annihilator_symms]
+    )
 
     assert n_implied_symmetrizations >= n_required_symmetrizations
     assert n_implied_symmetrizations % n_required_symmetrizations == 0
 
-    prefac_numerator = n_implied_symmetrizations // n_required_symmetrizations
+    # SeQuant implicitly understands symmetrizations as symmetrizations with renormalizations. That is,
+    # it will always multiply with a factor of 1/n_implied_symmetrizations when expanding the symmetrizer.
+    # However, the symmetrizations we want have to be performed without renormalization so we have to
+    # multiply by n_required_symmetrizations to (partially) cancel the implied renormalization factor.
+    prefac = n_required_symmetrizations
 
     if len(externals.creators) <= 1 and len(externals.annihilators) <= 1:
-        assert prefac_numerator == 1
+        assert prefac == 1
         return None
 
     # SeQuant doesn't have a dedicated representation of antisymmetrization operators. Instead, it simply
     # uses a tensor with the label "A"
     # Furthermore, we require to transpose creators and annihilators in order to get an upper-lower notation
     # that seemingly indicates contraction over external indices with the antisymmetrization "tensor"
-    externals.creators, externals.annihilators = externals.annihilators, externals.creators
+    externals.creators, externals.annihilators = (
+        externals.annihilators,
+        externals.creators,
+    )
 
     formatted = tensor_to_sequant(
         TensorElement(
@@ -92,8 +107,8 @@ def symmetrizations_to_sequant(
         )
     )
 
-    if prefac_numerator != 1:
-        formatted = "1/{} {}".format(prefac_numerator, formatted)
+    if prefac != 1:
+        formatted = "{} {}".format(prefac, formatted)
 
     return formatted
 
